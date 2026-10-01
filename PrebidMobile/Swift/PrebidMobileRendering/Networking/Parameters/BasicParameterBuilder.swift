@@ -77,6 +77,10 @@ class BasicParameterBuilder: NSObject, ParameterBuilder {
         if adFormats.contains(.native) {
             appendNativeParameters(for: bidRequest)
         }
+
+        if adFormats.contains(.audio) {
+            appendAudioParameters(for: bidRequest)
+        }
     }
 
     private func appendDisplayParameters(for bidRequest: ORTBBidRequest) {
@@ -94,5 +98,9 @@ class BasicParameterBuilder: NSObject, ParameterBuilder {
 
     private func appendNativeParameters(for bidRequest: ORTBBidRequest) {
         bidRequest.imp.first?.native = ORTBNative()
+    }
+
+    private func appendAudioParameters(for bidRequest: ORTBBidRequest) {
+        bidRequest.imp.first?.audio = ORTBAudio()
     }
 }

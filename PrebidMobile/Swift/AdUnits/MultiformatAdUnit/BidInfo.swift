@@ -50,6 +50,11 @@ public class BidInfo: NSObject {
     /// publishers can track the yield impact of the filtering.
     public private(set) var topBidFiltered: Bool
 
+    /// The winning bid itself, for callers that render it themselves: its `adm` is the creative
+    /// markup (VAST for audio and in-stream video), with `price`, `nurl`, `burl` and `events`.
+    /// `nil` when there is no winning bid.
+    public private(set) var winningBid: Bid?
+
     /// Initializes a new `BidInfo` instance with the specified parameters.
     /// - Parameters:
     ///   - resultCode: The result code of the bid request.
@@ -92,6 +97,7 @@ public class BidInfo: NSObject {
             nativeAdCacheId: bidResponse.targetingInfo?[PrebidLocalCacheIdKey],
             topBidFiltered: bidResponse.topBidWasFiltered
         )
+        bidInfo.winningBid = bidResponse.winningBid
         
         if let winURL = bidResponse.winningBid?.events?.win {
             bidInfo.addEvent(key: BidInfo.EVENT_WIN, value: winURL)

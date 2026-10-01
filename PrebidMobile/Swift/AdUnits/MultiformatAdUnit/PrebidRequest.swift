@@ -34,6 +34,7 @@ public class PrebidRequest: NSObject {
     private(set) var bannerParameters: BannerParameters?
     private(set) var videoParameters: VideoParameters?
     private(set) var nativeParameters: NativeParameters?
+    private(set) var audioParameters: AudioParameters?
     
     private(set) var isInterstitial = false
     private(set) var isRewarded = false
@@ -65,6 +66,14 @@ public class PrebidRequest: NSObject {
         super.init()
     }
     
+    /// Initializes a new audio `PrebidRequest`. The winning bid's VAST is returned in
+    /// `BidInfo.winningBid?.adm` for the caller's own audio player; the SDK does not render audio.
+    /// - Parameter audioParameters: The audio parameters for the ad request.
+    public convenience init(audioParameters: AudioParameters) {
+        self.init()
+        self.audioParameters = audioParameters
+    }
+
     // MARK: GPID
     
     /// Sets the GPID for the ad request.

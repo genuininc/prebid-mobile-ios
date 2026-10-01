@@ -51,7 +51,7 @@ class ORTBAbstractTest : XCTestCase {
         codeAndDecode(abstract:ORTBBanner(), expectedString: "{}")
         codeAndDecode(abstract:ORTBVideo(), expectedString: "{}")
         
-        //Audio not implemented
+        codeAndDecode(abstract:ORTBAudio(), expectedString: "{}")
         //Native not implemented
         codeAndDecode(abstract:ORTBFormat(), expectedString: "{}")
         codeAndDecode(abstract:ORTBPmp(), expectedString: "{}")
@@ -72,6 +72,27 @@ class ORTBAbstractTest : XCTestCase {
         codeAndDecode(abstract:ORTBImpExtPrebid(), expectedString: "{}")
         
         codeAndDecode(abstract: ORTBImpExtSkadn(), expectedString: "{}")
+    }
+
+    func testAudioToJsonString() {
+        let audio = ORTBAudio()
+        audio.mimes = ["audio/mpeg"]
+        audio.minduration = 5
+        audio.maxduration = 60
+        audio.protocols = [2, 7]
+        audio.startdelay = 0
+        audio.minbitrate = 64
+        audio.maxbitrate = 320
+        audio.delivery = [2]
+        audio.api = [7]
+        audio.battr = [16]
+        audio.feed = 3
+        audio.stitched = 0
+        audio.nvol = 1
+
+        codeAndDecode(abstract: audio, expectedString: "{\"api\":[7],\"battr\":[16],\"delivery\":[2],\"feed\":3,"
+            + "\"maxbitrate\":320,\"maxduration\":60,\"mimes\":[\"audio\\/mpeg\"],\"minbitrate\":64,"
+            + "\"minduration\":5,\"nvol\":1,\"protocols\":[2,7],\"startdelay\":0,\"stitched\":0}")
     }
 
     // MARK: - Decode/encode parity (playbook Gap S2.5-C)

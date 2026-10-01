@@ -177,6 +177,10 @@ public class PrebidConstants: NSObject {
         "video/mp4", "video/quicktime", "video/x-m4v", "video/3gpp", "video/3gpp2"
     ]
 
+    public static let SUPPORTED_AUDIO_MIME_TYPES = [
+        "audio/mpeg", "audio/mp4", "audio/aac"
+    ]
+
     public static let URL_SCHEMES_FOR_APP_STORE_AND_ITUNES = [
         "itms", "itmss", "itms-apps", "itms-appss"
     ]

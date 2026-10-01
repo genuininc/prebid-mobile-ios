@@ -114,6 +114,24 @@ class PrebidAdUnitTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
+    func testAdUnitConfiguration_audio() {
+        let expectation = expectation(description: "\(#function)")
+
+        let adUnit = PrebidAdUnit(configId: "test-config-id")
+        let audioParameters = AudioParameters(mimes: ["audio/mpeg"])
+        let request = PrebidRequest(audioParameters: audioParameters)
+        let config = adUnit.getConfiguration()
+
+        adUnit.fetchDemand(request: request) { bidInfo in
+            XCTAssertNotEqual(bidInfo.resultCode, .prebidInvalidRequest)
+            XCTAssertTrue(config.adConfiguration.audioParameters === audioParameters)
+            XCTAssertEqual(config.adFormats, [.audio])
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
     func testAdUnitConfiguration_native() {
         let testObject: AnyObject = () as AnyObject
         let expectation = expectation(description: "\(#function)")

@@ -157,6 +157,7 @@ public class PrebidAdUnit: NSObject {
     
     private func requestHasParameters(_ request: PrebidRequest) -> Bool {
         return request.bannerParameters != nil || request.videoParameters != nil || request.nativeParameters != nil
+            || request.audioParameters != nil
     }
     
     private func config(with request: PrebidRequest) {
@@ -179,6 +180,11 @@ public class PrebidAdUnit: NSObject {
             }
         }
         
+        if let audioParameters = request.audioParameters {
+            adUnit.adUnitConfig.adConfiguration.audioParameters = audioParameters
+            adUnit.adUnitConfig.adFormats.insert(.audio)
+        }
+
         if let nativeParameters = request.nativeParameters {
             adUnit.adUnitConfig.nativeAdConfiguration = NativeAdConfiguration(nativeParameters: nativeParameters)
             adUnit.adUnitConfig.adFormats.insert(.native)

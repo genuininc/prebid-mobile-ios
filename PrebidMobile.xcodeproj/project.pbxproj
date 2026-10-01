@@ -712,6 +712,7 @@
 		B82FCFDC9956E7A6F3557532 /* CircularProgressBarLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E467D78D8987842DC7BCC864 /* CircularProgressBarLayer.swift */; };
 		B89508F208D08449846913D9 /* DeepLinkPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAC3CF764AEFF11C515EFF9 /* DeepLinkPlus.swift */; };
 		BB10011FE7B2CBB22685136D /* NetworkParameterBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E637F852290626F7408F8D8C /* NetworkParameterBuilder.swift */; };
+		BC4F96690FB5FDB672A964DA /* AudioParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D59B60CD5106C96E2CC8461 /* AudioParameters.swift */; };
 		BD50AF3572C7C970DFB18A21 /* BundleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CAD7CC2D03809BCE823ECD /* BundleProtocol.swift */; };
 		BDA1F453C1673AC8FF7545C5 /* NSTimer+PBMScheduledTimerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601297E5B5D41ED364B4E464 /* NSTimer+PBMScheduledTimerFactory.swift */; };
 		C0D3A0020000000000000001 /* BannerViewTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3A0010000000000000001 /* BannerViewTestHelpers.swift */; };
@@ -735,6 +736,7 @@
 		E92665FA21BEFC59B4C4A521 /* Functions+Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F12838B16AF520EC1E7FB80 /* Functions+Testing.swift */; };
 		EEC03AD6E351AFE0FC589EBB /* GeoLocationParameterBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0918024B761A2FC1C16C8BB /* GeoLocationParameterBuilder.swift */; };
 		F5E5743E73977AA4C9D3DB0F /* ORTBDeviceExtPrebidInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C98CE7FF0CEDDDA4593726 /* ORTBDeviceExtPrebidInterstitial.swift */; };
+		F69A67B5B19542FDA465918B /* ORTBAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0F9B769B2D32D112DFE042 /* ORTBAudio.swift */; };
 		FA12590120260425000000A1 /* FunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA12590120260425000000A2 /* FunctionsTests.swift */; };
 		FA5AD5E42271FA4100C8F274 /* ConstantsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5AD5E32271FA4100C8F274 /* ConstantsTest.swift */; };
 		FA9D7F2722E8A83D006FCBEF /* AdViewUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D7F2622E8A83D006FCBEF /* AdViewUtilsTests.swift */; };
@@ -846,6 +848,7 @@
 		2A9DDDD32C63665A000EA4A0 /* PBMEventDelegateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBMEventDelegateHelper.swift; sourceTree = "<group>"; };
 		2A9DDDD72C63A88C000EA4A0 /* PrebidEventDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrebidEventDelegateTests.swift; sourceTree = "<group>"; };
 		2AB891002AE52343932C140A /* ORTBRegs.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ORTBRegs.swift; sourceTree = "<group>"; };
+		2D59B60CD5106C96E2CC8461 /* AudioParameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioParameters.swift; sourceTree = "<group>"; };
 		2D64B71C29070D654233B212 /* DeviceAccessManagerKeys.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceAccessManagerKeys.swift; sourceTree = "<group>"; };
 		360DDF22CFA7990EC8F8B9FD /* ORTBGeo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ORTBGeo.swift; sourceTree = "<group>"; };
 		3871C59520F7BB233C8E9387 /* ORTBPmp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ORTBPmp.swift; sourceTree = "<group>"; };
@@ -1563,6 +1566,7 @@
 		ED245A104A112F097C6593E5 /* ORTBAppExt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ORTBAppExt.swift; sourceTree = "<group>"; };
 		F5D40071933E258EF6A2F222 /* DownloadDataHelper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DownloadDataHelper.swift; sourceTree = "<group>"; };
 		F9F0999C2C78CC8A007DB464 /* SDKConsoleLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKConsoleLogger.swift; sourceTree = "<group>"; };
+		FA0F9B769B2D32D112DFE042 /* ORTBAudio.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ORTBAudio.swift; sourceTree = "<group>"; };
 		FA12590120260425000000A2 /* FunctionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionsTests.swift; sourceTree = "<group>"; };
 		FA4A88432497A99D00FDCBB6 /* Swizzling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
 		FA5AD5E32271FA4100C8F274 /* ConstantsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsTest.swift; sourceTree = "<group>"; };
@@ -1826,6 +1830,7 @@
 				53E3910D27FCD60800DBA2F7 /* VideoParameters.swift */,
 				53A368EA2AB2E95E00A03B3E /* NativeParameters.swift */,
 				53A8CBDA2C64D12A008ABEA7 /* SingleContainerInt.swift */,
+				2D59B60CD5106C96E2CC8461 /* AudioParameters.swift */,
 			);
 			path = Parameters;
 			sourceTree = "<group>";
@@ -3287,6 +3292,7 @@
 				0D6ACD389F978752087E0949 /* ORTBSource.swift */,
 				82FBD50AA9C905E01710527F /* ORTBSourceExtOMID.swift */,
 				886FF24ABB135D0617F9DB78 /* ORTBRendererConfig.swift */,
+				FA0F9B769B2D32D112DFE042 /* ORTBAudio.swift */,
 			);
 			name = Request;
 			path = Request;
@@ -4345,6 +4351,8 @@
 				79E1DEB8A96A06250372AF97 /* TrackingURLVisitors.swift in Sources */,
 				CB42362D09DAFEF27BAE4C16 /* ExternalLinkHandler.swift in Sources */,
 				9927746C621ACE46F9920949 /* EidsPlacement.swift in Sources */,
+				F69A67B5B19542FDA465918B /* ORTBAudio.swift in Sources */,
+				BC4F96690FB5FDB672A964DA /* AudioParameters.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

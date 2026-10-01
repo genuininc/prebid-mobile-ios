@@ -129,6 +129,7 @@ public class AdUnitConfig: NSObject, NSCopying {
         clone.nativeAdConfiguration = self.nativeAdConfiguration
         clone.adConfiguration.bannerParameters = self.adConfiguration.bannerParameters
         clone.adConfiguration.videoParameters = self.adConfiguration.videoParameters
+        clone.adConfiguration.audioParameters = self.adConfiguration.audioParameters
         clone.adConfiguration.videoControlsConfig = self.adConfiguration.videoControlsConfig
         clone.adConfiguration.winningBidAdFormat = self.adConfiguration.winningBidAdFormat
         clone.sizes = sizes
@@ -156,6 +157,7 @@ public class AdUnitConfig: NSObject, NSCopying {
         clone.nativeAdConfiguration = self.nativeAdConfiguration
         clone.adConfiguration.bannerParameters = self.adConfiguration.bannerParameters
         clone.adConfiguration.videoParameters = self.adConfiguration.videoParameters
+        clone.adConfiguration.audioParameters = self.adConfiguration.audioParameters
         clone.adConfiguration.videoControlsConfig = self.adConfiguration.videoControlsConfig
         clone.adConfiguration.clickHandlerOverride = self.adConfiguration.clickHandlerOverride
         clone.adConfiguration.autoRefreshDelay = self.adConfiguration.autoRefreshDelay

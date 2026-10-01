@@ -23,6 +23,7 @@ public class ORTBImp: NSObject, PBMJsonCodable {
     @objc public var impID: String?
     @objc public var banner: ORTBBanner?
     @objc public var video: ORTBVideo?
+    @objc public var audio: ORTBAudio?
     @objc public var native: ORTBNative?
     @objc public var pmp: ORTBPmp = ORTBPmp()
     @objc public var displaymanager: String?
@@ -54,6 +55,7 @@ public class ORTBImp: NSObject, PBMJsonCodable {
         impID            = json[.id]
         banner           = json[.banner]
         video            = json[.video]
+        audio            = json[.audio]
         native           = json[.native]
         pmp              = json[.pmp] ?? ORTBPmp()
         displaymanager   = json[.displaymanager]
@@ -82,6 +84,7 @@ public class ORTBImp: NSObject, PBMJsonCodable {
         json[.id]                = impID
         json[.banner]            = banner
         json[.video]             = video
+        json[.audio]             = audio
         json[.native]            = native
         json[.pmp]               = pmp
         json[.displaymanager]    = displaymanager
@@ -133,7 +136,7 @@ public class ORTBImp: NSObject, PBMJsonCodable {
     // MARK: - Keys
 
     private enum Key: String {
-        case id, banner, video, native, pmp
+        case id, banner, video, audio, native, pmp
         case displaymanager, displaymanagerver, instl, tagid
         case clickbrowser, secure, rwdd
     }

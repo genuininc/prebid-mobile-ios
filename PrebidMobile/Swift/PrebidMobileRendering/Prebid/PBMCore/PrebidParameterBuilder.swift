@@ -271,6 +271,8 @@ class PrebidParameterBuilder: NSObject, ParameterBuilder {
                     if adConfiguration.adPosition != .undefined {
                         nextVideo.pos = NSNumber(value: adConfiguration.adPosition.rawValue)
                     }
+                } else if adFormat == .audio, let nextAudio = nextImp.audio {
+                    Self.fill(nextAudio, from: adConfiguration.adConfiguration.audioParameters)
                 } else if adFormat == .native, let nextNative = nextImp.native {
                     nextNative.request = try? adConfiguration.nativeAdConfiguration?.markupRequestObject.toJsonString()
                     if let ver = adConfiguration.nativeAdConfiguration?.version {
@@ -294,6 +296,20 @@ class PrebidParameterBuilder: NSObject, ParameterBuilder {
     }
 
     // MARK: - Private
+
+    private static func fill(_ audio: ORTBAudio, from parameters: AudioParameters) {
+        audio.mimes = parameters.mimes.isEmpty ? PrebidConstants.SUPPORTED_AUDIO_MIME_TYPES : parameters.mimes
+        audio.minduration = parameters.minDuration.map { NSNumber(value: $0.value) }
+        audio.maxduration = parameters.maxDuration.map { NSNumber(value: $0.value) }
+        audio.protocols = parameters.rawProtocols?.map { NSNumber(value: $0) }
+        audio.startdelay = parameters.startDelay.map { NSNumber(value: $0.value) }
+        audio.minbitrate = parameters.minBitrate.map { NSNumber(value: $0.value) }
+        audio.maxbitrate = parameters.maxBitrate.map { NSNumber(value: $0.value) }
+        audio.api = parameters.rawAPI?.map { NSNumber(value: $0) }
+        audio.battr = parameters.rawBattrs?.map { NSNumber(value: $0) }
+        audio.feed = parameters.feed.map { NSNumber(value: $0.value) }
+        audio.stitched = parameters.rawStitched
+    }
 
     private static func ortbFormat(withSize size: CGSize) -> ORTBFormat {
         let format = ORTBFormat()

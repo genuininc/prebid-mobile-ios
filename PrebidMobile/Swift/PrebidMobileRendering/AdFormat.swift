@@ -52,10 +52,15 @@ public class AdFormat: NSObject, OptionSet {
     
     /// Represents a native ad format.
     public static let native = AdFormat(rawValue: 1 << 2, stringEquivalent: "native")
+
+    /// Represents an audio ad format: an OpenRTB `imp.audio` request, answered with VAST whose
+    /// media file is audio. Requested through `PrebidRequest(audioParameters:)` and returned to
+    /// the caller via `BidInfo.winningBid`; the SDK does not render audio itself.
+    public static let audio = AdFormat(rawValue: 1 << 3, stringEquivalent: "audio")
     
     /// An array containing all cases of ad formats.
     public static var allCases: [AdFormat] {
-        [.banner, .video, .native]
+        [.banner, .video, .native, .audio]
     }
     
     public override func isEqual(_ object: Any?) -> Bool {

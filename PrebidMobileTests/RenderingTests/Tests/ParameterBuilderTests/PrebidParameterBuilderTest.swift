@@ -503,6 +503,51 @@ class PrebidParameterBuilderTest: XCTestCase {
         XCTAssertEqual(banner.api, nil)
     }
     
+    func testAudio() {
+        let adUnitConfig = AdUnitConfig(configId: "b6260e2b-bc4c-4d10-bdb5-f7bdd62f5ed4", size: .zero)
+        adUnitConfig.adFormats = [.audio]
+
+        let parameters = AudioParameters(mimes: ["audio/mpeg"])
+        parameters.minDuration = 5
+        parameters.maxDuration = 60
+        parameters.protocols = [.VAST_2_0, .VAST_4_0]
+        parameters.startDelay = .PreRoll
+        parameters.minBitrate = 64
+        parameters.maxBitrate = 320
+        parameters.feed = 3
+        parameters.isStitched = false
+        adUnitConfig.adConfiguration.audioParameters = parameters
+
+        let bidRequest = buildBidRequest(with: adUnitConfig)
+
+        guard let imp = bidRequest.imp.first, let audio = imp.audio else {
+            XCTFail("No Audio object!")
+            return
+        }
+
+        XCTAssertNil(imp.banner)
+        XCTAssertNil(imp.video)
+        PBMAssertEq(audio.mimes, ["audio/mpeg"])
+        PBMAssertEq(audio.minduration, 5)
+        PBMAssertEq(audio.maxduration, 60)
+        PBMAssertEq(audio.protocols, [2, 7])
+        PBMAssertEq(audio.startdelay, 0)
+        PBMAssertEq(audio.minbitrate, 64)
+        PBMAssertEq(audio.maxbitrate, 320)
+        PBMAssertEq(audio.feed, 3)
+        PBMAssertEq(audio.stitched, 0)
+    }
+
+    func testAudioDefaultMimes() {
+        let adUnitConfig = AdUnitConfig(configId: "b6260e2b-bc4c-4d10-bdb5-f7bdd62f5ed4", size: .zero)
+        adUnitConfig.adFormats = [.audio]
+
+        let bidRequest = buildBidRequest(with: adUnitConfig)
+
+        PBMAssertEq(bidRequest.imp.first?.audio?.mimes, PrebidConstants.SUPPORTED_AUDIO_MIME_TYPES)
+        XCTAssertNil(bidRequest.imp.first?.audio?.maxduration)
+    }
+
     func testDefaultVideoParameters_VideoBanner_OriginalAPI() {
         let adUnit = BannerAdUnit(configId: "configId", size: CGSize(width: 300, height: 250))
         adUnit.adFormats = [.video]

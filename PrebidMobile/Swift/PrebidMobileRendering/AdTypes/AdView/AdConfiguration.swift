@@ -36,6 +36,11 @@ public class AdConfiguration: AutoRefreshCountConfig {
      Describes an OpenRTB video object
      */
     public lazy var videoParameters = VideoParameters(mimes: [])
+
+    /**
+     Describes an OpenRTB audio object
+     */
+    public lazy var audioParameters = AudioParameters(mimes: [])
     
     // MARK: - Interstitial
     

@@ -296,6 +296,15 @@ class AdUnitTests: XCTestCase {
         XCTAssertFalse(untouchedInfo.topBidFiltered)
     }
 
+    func testBidInfoCarriesWinningBid() {
+        let bidResponse = BidResponse(jsonDictionary: Self.topBidUncachedRunnerUpCachedResponse())
+        let bidInfo = BidInfo.create(resultCode: .prebidDemandFetchSuccess, bidResponse: bidResponse)
+
+        XCTAssertNotNil(bidInfo.winningBid)
+        XCTAssertTrue(bidInfo.winningBid === bidResponse.winningBid)
+        XCTAssertNil(BidInfo(resultCode: .prebidDemandNoBids).winningBid)
+    }
+
     /// PBS-designated winner (unsuffixed hb_* keys, no cache entry) plus a cached runner-up.
     private static func topBidUncachedRunnerUpCachedResponse() -> [String : Any] {
         let topBid: [String : Any] = [
