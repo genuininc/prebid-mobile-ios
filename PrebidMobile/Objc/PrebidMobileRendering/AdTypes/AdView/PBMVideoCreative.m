@@ -38,6 +38,9 @@
 // Whether playback should follow the viewability of the ad view.
 @property (nonatomic, assign, readonly) BOOL isVisibilityDrivenPlayback;
 
+// The AdChoices view tracker fires once per creative.
+@property (nonatomic, assign) BOOL adChoicesViewTracked;
+
 @end
 
 #pragma mark - Implementation
@@ -178,6 +181,35 @@
         return;
     }
     [self learnMoreWasClicked];
+}
+
+- (void)trackAdChoicesView {
+    PBMVideoAdChoices *adChoices = self.creativeModel.adChoices;
+    if (!adChoices || self.adChoicesViewTracked) {
+        return;
+    }
+    self.adChoicesViewTracked = YES;
+    [PrebidServerConnection.shared fireAndForget:adChoices.viewTrackingURL];
+}
+
+- (void)openAdChoices {
+    PBMVideoAdChoices *adChoices = self.creativeModel.adChoices;
+    NSURL *url = adChoices.clickThroughURL ? [NSURL URLWithString:adChoices.clickThroughURL] : nil;
+    if (!url) {
+        return;
+    }
+    for (NSString *tracking in adChoices.clickTrackingURLs) {
+        [PrebidServerConnection.shared fireAndForget:tracking];
+    }
+    [self pause];
+    @weakify(self);
+    [super handleClickthrough:url completionHandler:^(BOOL success) {
+        // nop
+    } onExit:^{
+        @strongify(self);
+        if (!self) { return; }
+        [self resume];
+    }];
 }
 
 - (BOOL)isPlaybackPaused {

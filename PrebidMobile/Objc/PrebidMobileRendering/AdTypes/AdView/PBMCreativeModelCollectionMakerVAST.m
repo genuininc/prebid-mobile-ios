@@ -16,6 +16,8 @@
 #import "PBMCreativeModelCollectionMakerVAST.h"
 #import "PBMVastCreativeCompanionAdsCompanion.h"
 #import "PBMVastCreativeLinear.h"
+#import "PBMVastIcon.h"
+#import "PBMVastGlobals.h"
 #import "PBMVastInlineAd.h"
 #import "PBMVastParser.h"
 #import "PBMVastResponse.h"
@@ -167,6 +169,7 @@
     
     creativeModel.trackingURLs = trackingURLs;
     creativeModel.clickThroughURL = creative.clickThroughURI;
+    creativeModel.adChoices = [PBMCreativeModelCollectionMakerVAST adChoicesFromLinear:creative];
     
     return creativeModel;
 }
@@ -263,6 +266,25 @@
     NSString * html = [NSString stringWithFormat:PrebidConstants.companionHTMLTemplate, companion.clickThroughURI, companion.resource];
     
     return html;
+}
+
+/// The first `<Icon program="AdChoices">` with a static image, as `PBMVideoAdChoices`.
++ (nullable PBMVideoAdChoices *)adChoicesFromLinear:(PBMVastCreativeLinear *)linear {
+    for (PBMVastIcon *icon in linear.icons) {
+        if ([icon.program caseInsensitiveCompare:@"AdChoices"] != NSOrderedSame ||
+            icon.resourceType != PBMVastResourceTypeStaticResource ||
+            icon.resource.length == 0) {
+            continue;
+        }
+        NSString *image = [icon.resource stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+        return [[PBMVideoAdChoices alloc] initWithImageURL:image
+                                           clickThroughURL:icon.clickThroughURI
+                                         clickTrackingURLs:icon.clickTrackingURIs ?: @[]
+                                           viewTrackingURL:icon.viewTrackingURI
+                                                     width:icon.width
+                                                    height:icon.height];
+    }
+    return nil;
 }
 
 @end

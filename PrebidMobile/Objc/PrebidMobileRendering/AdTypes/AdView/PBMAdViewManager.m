@@ -176,6 +176,22 @@
     }
 }
 
+- (PBMVideoAdChoices *)adChoices {
+    return self.currentCreative.creativeModel.adChoices;
+}
+
+- (void)trackAdChoicesView {
+    if ([self.currentCreative respondsToSelector:@selector(trackAdChoicesView)]) {
+        [self.currentCreative trackAdChoicesView];
+    }
+}
+
+- (void)openAdChoices {
+    if ([self.currentCreative respondsToSelector:@selector(openAdChoices)]) {
+        [self.currentCreative openAdChoices];
+    }
+}
+
 - (NSNumber *)skipOffset {
     return self.currentCreative.creativeModel.skipOffset;
 }

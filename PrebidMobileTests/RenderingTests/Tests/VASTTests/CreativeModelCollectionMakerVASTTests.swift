@@ -176,4 +176,74 @@ class CreativeModelCollectionMakerVASTTests: XCTestCase {
         
         waitForExpectations(timeout: 3)
     }
+
+    // MARK: - AdChoices
+
+    func testAdChoicesIconIsCarriedToTheModel() {
+        let models = makeModels(fromVAST: vast(iconProgram: "AdChoices"))
+        let adChoices = models.first?.adChoices
+        XCTAssertEqual(adChoices?.imageURL, "https://cdn.example.com/adchoices.png")
+        XCTAssertEqual(adChoices?.clickThroughURL, "https://example.com/adchoices")
+        XCTAssertEqual(adChoices?.clickTrackingURLs, ["https://t.example.com/icon-click"])
+        XCTAssertEqual(adChoices?.viewTrackingURL, "https://t.example.com/icon-view")
+        XCTAssertEqual(adChoices?.width, 18)
+        XCTAssertEqual(adChoices?.height, 15)
+    }
+
+    func testIconOfAnotherProgramIsNotAdChoices() {
+        let models = makeModels(fromVAST: vast(iconProgram: "BrandLogo"))
+        XCTAssertEqual(models.count, 1)
+        XCTAssertNil(models.first?.adChoices)
+    }
+
+    private func vast(iconProgram: String) -> String {
+        """
+        <VAST version="4.0"><Ad id="a"><InLine><AdSystem>Test</AdSystem><AdTitle>t</AdTitle>
+        <Impression><![CDATA[https://t.example.com/imp]]></Impression>
+        <Creatives><Creative><Linear><Duration>00:00:10</Duration>
+        <MediaFiles><MediaFile delivery="progressive" type="video/mp4" width="1280" height="720">\
+        <![CDATA[https://cdn.example.com/ad.mp4]]></MediaFile></MediaFiles>
+        <Icons><Icon program="\(iconProgram)" width="18" height="15" xPosition="right" yPosition="top">
+        <StaticResource creativeType="image/png"><![CDATA[https://cdn.example.com/adchoices.png]]></StaticResource>
+        <IconClicks><IconClickThrough><![CDATA[https://example.com/adchoices]]></IconClickThrough>
+        <IconClickTracking><![CDATA[https://t.example.com/icon-click]]></IconClickTracking></IconClicks>
+        <IconViewTracking><![CDATA[https://t.example.com/icon-view]]></IconViewTracking>
+        </Icon></Icons></Linear></Creative></Creatives></InLine></Ad></VAST>
+        """
+    }
+
+    private func makeModels(fromVAST vast: String) -> [CreativeModel] {
+        let adConfiguration = AdConfiguration()
+        adConfiguration.adFormats = [.video]
+        let conn = UtilitiesForTesting.createConnectionForMockedTest()
+        let adLoadManager = MockPBMAdLoadManagerVAST(
+            bid: RawWinningBidFabricator.makeWinningBid(price: 0.1, bidder: "bidder", cacheID: "cache-id"),
+            connection: conn,
+            adConfiguration: adConfiguration
+        )
+        let loaded = expectation(description: "VAST loaded")
+        var response: PBMAdRequestResponseVAST?
+        adLoadManager.mock_requestCompletedSuccess = {
+            response = $0
+            loaded.fulfill()
+        }
+        let requester = PBMAdRequesterVAST(serverConnection: conn, adConfiguration: adConfiguration)
+        requester.adLoadManager = adLoadManager
+        requester.buildAdsArray(Data(vast.utf8))
+        wait(for: [loaded], timeout: 2)
+
+        guard let response else { return [] }
+        var models: [CreativeModel] = []
+        let made = expectation(description: "models made")
+        PBMCreativeModelCollectionMakerVAST(serverConnection: conn, adConfiguration: adConfiguration)
+            .makeModels(response, successCallback: {
+                models = $0
+                made.fulfill()
+            }, failureCallback: {
+                XCTFail($0.localizedDescription)
+                made.fulfill()
+            })
+        wait(for: [made], timeout: 3)
+        return models
+    }
 }

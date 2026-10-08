@@ -346,6 +346,21 @@ public class BannerView:
         videoControls?.openClickThrough?()
     }
 
+    /// The video ad's AdChoices icon, when its VAST has one.
+    public var videoAdChoices: VideoAdChoices? {
+        videoControls?.adChoices ?? nil
+    }
+
+    /// Call when the app shows the AdChoices icon; fires its view tracker once.
+    public func trackVideoAdChoicesView() {
+        videoControls?.trackAdChoicesView?()
+    }
+
+    /// Fires the AdChoices click trackers and opens its click-through.
+    public func openVideoAdChoices() {
+        videoControls?.openAdChoices?()
+    }
+
     public func pauseVideo() {
         videoControls?.pause()
     }

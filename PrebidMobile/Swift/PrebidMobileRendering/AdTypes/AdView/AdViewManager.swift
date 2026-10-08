@@ -51,6 +51,9 @@ protocol AdViewManager: CreativeViewDelegate {
     @objc optional var videoSize: CGSize { get }
     @objc optional var hasClickThrough: Bool { get }
     @objc optional func openClickThrough()
+    @objc optional var adChoices: VideoAdChoices? { get }
+    @objc optional func trackAdChoicesView()
+    @objc optional func openAdChoices()
     /// The VAST `skipoffset` in seconds, or `nil` when the ad isn't skippable.
     @objc optional var skipOffset: NSNumber? { get }
     

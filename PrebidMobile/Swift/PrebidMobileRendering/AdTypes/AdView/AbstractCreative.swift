@@ -91,6 +91,10 @@ protocol AbstractCreative: NSObjectProtocol {
     @objc optional var hasClickThrough: Bool { get }
     /// Opens the click-through and tracks the click, as Prebid's own Learn More button does.
     @objc optional func openClickThrough()
+    /// Fires the AdChoices icon's view tracker, once.
+    @objc optional func trackAdChoicesView()
+    /// Fires the AdChoices icon's click trackers and opens its click-through.
+    @objc optional func openAdChoices()
     
     //Modal Manager Events
     func modalManagerDidFinishPop(_ state: ModalState)

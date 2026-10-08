@@ -48,6 +48,8 @@ class CreativeModel: NSObject {
     @objc public var adTrackingTemplateURL: String?
     @objc public var adDetails: AdDetails?
     @objc public var clickThroughURL: String?
+    /// The linear creative's AdChoices icon (`<Icon program="AdChoices">`), when it has one.
+    @objc public var adChoices: VideoAdChoices?
     @objc public var isCompanionAd: Bool = false
     @objc public var hasCompanionAd: Bool = false
 
@@ -68,5 +70,34 @@ class CreativeModel: NSObject {
     
     @objc func trackEvent(_ event: TrackingEvent) {
         eventTracker?.trackEvent(event)
+    }
+}
+
+/// A video ad's AdChoices icon (VAST `<Icon program="AdChoices">` with a `StaticResource`), for an
+/// app that draws it next to the ad. `BannerView` fires its view and click trackers.
+@objc(PBMVideoAdChoices) @objcMembers
+public class VideoAdChoices: NSObject {
+    public let imageURL: String
+    public let clickThroughURL: String?
+    public let clickTrackingURLs: [String]
+    public let viewTrackingURL: String?
+    public let width: Int
+    public let height: Int
+
+    public init(
+        imageURL: String,
+        clickThroughURL: String?,
+        clickTrackingURLs: [String],
+        viewTrackingURL: String?,
+        width: Int,
+        height: Int
+    ) {
+        self.imageURL = imageURL
+        self.clickThroughURL = clickThroughURL
+        self.clickTrackingURLs = clickTrackingURLs
+        self.viewTrackingURL = viewTrackingURL
+        self.width = width
+        self.height = height
+        super.init()
     }
 }
