@@ -98,6 +98,10 @@ public class VideoControlsConfiguration: NSObject {
     /// use the `rwdd.close.action` configuration instead.
     /// Obtained from `ext.prebid.passthrough[].adConfiguration.isautocloseoncompletionenabled` or set by the user.
     public var isAutoCloseOnCompletionEnabled = true
+
+    /// Whether a finished video offers Prebid's own **Watch Again** button. `false` for an app
+    /// that draws its own controls next to the ad: the video then just stays on its last frame.
+    public var showsWatchAgainButton = true
     
     /// Use to initialize video controls with server values.
     public func initialize(with ortbAdConfiguration: ORTBAdConfiguration?) {

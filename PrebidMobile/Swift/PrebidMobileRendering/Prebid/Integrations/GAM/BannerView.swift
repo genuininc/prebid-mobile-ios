@@ -336,6 +336,13 @@ public class BannerView:
         videoControls?.videoSize ?? .zero
     }
 
+    /// Whether a finished video shows Prebid's **Watch Again** button (default `true`). Set
+    /// `false` when the app draws its own controls: the video stays on its last frame.
+    public var showsVideoWatchAgainButton: Bool {
+        get { adUnitConfig.adConfiguration.videoControlsConfig.showsWatchAgainButton }
+        set { adUnitConfig.adConfiguration.videoControlsConfig.showsWatchAgainButton = newValue }
+    }
+
     /// Whether the video ad has a click-through for an app's own Learn More button.
     public var hasVideoClickThrough: Bool {
         videoControls?.hasClickThrough ?? false
