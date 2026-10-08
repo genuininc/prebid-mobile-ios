@@ -74,6 +74,23 @@ protocol AbstractCreative: NSObjectProtocol {
     func resume()
     func mute()
     func unmute()
+
+    // Video creatives only: for an app that draws its own controls next to the ad.
+
+    /// Stops playback and tracks the VAST `skip` event, as Prebid's own skip button does.
+    @objc optional func skip()
+    /// Seconds played so far; 0 before playback starts.
+    @objc optional var playbackTime: TimeInterval { get }
+    /// The ad's length in seconds, or 0 while the media hasn't loaded.
+    @objc optional var playbackDuration: TimeInterval { get }
+    /// Paused by the app or by visibility; `false` while playing, before it starts and once done.
+    @objc optional var isPlaybackPaused: Bool { get }
+    /// The media's own size, `.zero` until it has loaded.
+    @objc optional var videoSize: CGSize { get }
+    /// Whether the ad has a VAST `ClickThrough` to open.
+    @objc optional var hasClickThrough: Bool { get }
+    /// Opens the click-through and tracks the click, as Prebid's own Learn More button does.
+    @objc optional func openClickThrough()
     
     //Modal Manager Events
     func modalManagerDidFinishPop(_ state: ModalState)

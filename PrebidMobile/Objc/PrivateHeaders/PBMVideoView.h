@@ -64,6 +64,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)resumeAfterVisibilityChange;
 
 - (void)stop;
+
+/// Stops playback and completes the display with the VAST `skip` event.
+- (void)skipButtonTapped;
+
+/// The shorter of the VAST duration and the media's own: where playback is stopped.
+- (CGFloat)requiredVideoDuration;
 - (void)stopWithTrackingEvent:(PBMTrackingEvent)trackingEvent;
 
 - (void)mute;

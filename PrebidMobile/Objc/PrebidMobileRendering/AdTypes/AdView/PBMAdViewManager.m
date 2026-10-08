@@ -144,6 +144,42 @@
     return [self.currentCreative isMuted];
 }
 
+- (void)skip {
+    if ([self.currentCreative respondsToSelector:@selector(skip)]) {
+        [self.currentCreative skip];
+    }
+}
+
+- (NSTimeInterval)playbackTime {
+    return [self.currentCreative respondsToSelector:@selector(playbackTime)] ? self.currentCreative.playbackTime : 0;
+}
+
+- (NSTimeInterval)playbackDuration {
+    return [self.currentCreative respondsToSelector:@selector(playbackDuration)] ? self.currentCreative.playbackDuration : 0;
+}
+
+- (BOOL)isPlaybackPaused {
+    return [self.currentCreative respondsToSelector:@selector(isPlaybackPaused)] && self.currentCreative.isPlaybackPaused;
+}
+
+- (CGSize)videoSize {
+    return [self.currentCreative respondsToSelector:@selector(videoSize)] ? self.currentCreative.videoSize : CGSizeZero;
+}
+
+- (BOOL)hasClickThrough {
+    return [self.currentCreative respondsToSelector:@selector(hasClickThrough)] && self.currentCreative.hasClickThrough;
+}
+
+- (void)openClickThrough {
+    if ([self.currentCreative respondsToSelector:@selector(openClickThrough)]) {
+        [self.currentCreative openClickThrough];
+    }
+}
+
+- (NSNumber *)skipOffset {
+    return self.currentCreative.creativeModel.skipOffset;
+}
+
 - (void)handleExternalTransaction:(id<PBMTransaction>)transaction {
     self.externalTransaction = transaction;
     [self onTransactionIsReady:transaction];

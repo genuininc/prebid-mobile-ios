@@ -42,6 +42,17 @@ protocol AdViewManager: CreativeViewDelegate {
     
     func mute()
     func unmute()
+
+    // The current video creative's, for an app that draws its own controls. See `AbstractCreative`.
+    @objc optional func skip()
+    @objc optional var playbackTime: TimeInterval { get }
+    @objc optional var playbackDuration: TimeInterval { get }
+    @objc optional var isPlaybackPaused: Bool { get }
+    @objc optional var videoSize: CGSize { get }
+    @objc optional var hasClickThrough: Bool { get }
+    @objc optional func openClickThrough()
+    /// The VAST `skipoffset` in seconds, or `nil` when the ad isn't skippable.
+    @objc optional var skipOffset: NSNumber? { get }
     
     func handleExternalTransaction(_ transaction: Transaction)
     

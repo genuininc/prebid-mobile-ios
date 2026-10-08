@@ -142,7 +142,7 @@ public class BannerView:
     /// Whether the deployed Prebid creative is a video that is currently playing.
     /// Read on every refresh tick so a video is never torn down mid-playback, while a
     /// creative that never reports playback (HTML, ad server, plugin) keeps refreshing.
-    var isVideoPlaying: Bool {
+    public var isVideoPlaying: Bool {
         (deployedView as? DisplayView)?.isVideoPlaying ?? false
     }
     
@@ -298,6 +298,76 @@ public class BannerView:
         }
     }
     
+    // MARK: Video controls
+
+    // For an app that draws its own play / pause / mute / skip controls next to a video ad.
+    // Each is a no-op (or 0 / nil) until a video creative is on screen, and for display ads.
+
+    private var videoControls: AdViewManager? {
+        (deployedView as? DisplayView)?.videoControls
+    }
+
+    /// Paused by `pauseVideo()` or while off screen. `isVideoPlaying` stays `true` meanwhile.
+    public var isVideoPaused: Bool {
+        videoControls?.isPlaybackPaused ?? false
+    }
+
+    public var isVideoMuted: Bool {
+        videoControls?.isMuted ?? false
+    }
+
+    /// Seconds played so far.
+    public var videoPlaybackTime: TimeInterval {
+        videoControls?.playbackTime ?? 0
+    }
+
+    /// The video's length in seconds, or 0 while it hasn't loaded.
+    public var videoDuration: TimeInterval {
+        videoControls?.playbackDuration ?? 0
+    }
+
+    /// The VAST `skipoffset` in seconds, or `nil` when the ad isn't skippable.
+    public var videoSkipOffset: NSNumber? {
+        videoControls?.skipOffset ?? nil
+    }
+
+    /// The video's own size, `.zero` until it has loaded. For laying the banner out around it.
+    public var videoSize: CGSize {
+        videoControls?.videoSize ?? .zero
+    }
+
+    /// Whether the video ad has a click-through for an app's own Learn More button.
+    public var hasVideoClickThrough: Bool {
+        videoControls?.hasClickThrough ?? false
+    }
+
+    /// Opens the video ad's click-through and tracks the click, as Prebid's Learn More does.
+    public func openVideoClickThrough() {
+        videoControls?.openClickThrough?()
+    }
+
+    public func pauseVideo() {
+        videoControls?.pause()
+    }
+
+    public func resumeVideo() {
+        videoControls?.resume()
+    }
+
+    public func muteVideo() {
+        videoControls?.mute()
+    }
+
+    public func unmuteVideo() {
+        videoControls?.unmute()
+    }
+
+    /// Stops the video and tracks the VAST `skip` event. Call it only once the skip offset has
+    /// passed; `videoPlaybackDidComplete` follows.
+    public func skipVideo() {
+        videoControls?.skip?()
+    }
+
     // MARK: Custom Renderer
     
     /// Subscribe to plugin renderer events

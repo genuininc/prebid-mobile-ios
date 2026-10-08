@@ -47,6 +47,13 @@ class DisplayView: UIView, PrebidMobileDisplayViewProtocol, AdViewManagerDelegat
     
     weak var videoPlaybackDelegate: DisplayViewVideoPlaybackDelegate?
 
+    // MARK: - Video controls
+
+    /// The rendered video creative's controls, for `BannerView`'s external-controls API.
+    var videoControls: AdViewManager? {
+        adViewManager
+    }
+
     // MARK: - Initializers
 
     public convenience init(frame: CGRect, bid: Bid, configId: String) {

@@ -156,6 +156,43 @@
     return self.videoView.isMuted;
 }
 
+- (void)skip {
+    [self.videoView skipButtonTapped];
+}
+
+- (NSTimeInterval)playbackTime {
+    NSTimeInterval seconds = CMTimeGetSeconds(self.videoView.avPlayer.currentTime);
+    return isfinite(seconds) ? seconds : 0;
+}
+
+- (CGSize)videoSize {
+    return self.videoView.avPlayer.currentItem.presentationSize;
+}
+
+- (BOOL)hasClickThrough {
+    return self.creativeModel.clickThroughURL.length > 0;
+}
+
+- (void)openClickThrough {
+    if (!self.hasClickThrough) {
+        return;
+    }
+    [self learnMoreWasClicked];
+}
+
+- (BOOL)isPlaybackPaused {
+    PBMVideoViewPlaybackState state = self.videoView.playbackState;
+    return state == PBMVideoViewPlaybackStatePaused
+        || state == PBMVideoViewPlaybackStatePausedByVisibility
+        || state == PBMVideoViewPlaybackStatePausedByBackground;
+}
+
+- (NSTimeInterval)playbackDuration {
+    // Where `PBMVideoView` stops the ad, so a countdown drawn from it ends with the ad.
+    NSTimeInterval seconds = [self.videoView requiredVideoDuration];
+    return isfinite(seconds) && seconds > 0 ? seconds : 0;
+}
+
 // Should the concept of "close" or dismiss be moved to PBMAbstractCreative?
 - (void)close {
     [self.videoView stopOnCloseButton:PBMTrackingEventCloseLinear];
