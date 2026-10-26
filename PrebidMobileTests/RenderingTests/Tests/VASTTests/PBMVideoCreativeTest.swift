@@ -27,9 +27,9 @@ private final class CompletionTrackingModalManager: MockModalManager {
     }
 }
 
-class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, CreativeViewDelegate, PBMVideoViewDelegate {
+class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, CreativeViewDelegate, VideoViewDelegate {
    
-    var videoCreative:PBMVideoCreative!
+    var videoCreative:VideoCreative!
     let connection = UtilitiesForTesting.createConnectionForMockedTest()
 
     var expectationDownloadCompleted:XCTestExpectation!
@@ -54,6 +54,8 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
     }
     
     override func tearDown() {
+        // Stop a video that is still playing, so its completion doesn't reach this test's delegate during a later test.
+        videoCreative?.close()
         MockServer.shared.reset()
         logToFile = nil
         super.tearDown()
@@ -61,7 +63,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
     
     func testInit() {
         let model = CreativeModel(adConfiguration:AdConfiguration())
-        self.videoCreative = PBMVideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
+        self.videoCreative = VideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
         
         XCTAssertNotNil(self.videoCreative)
         XCTAssertNotNil(self.videoCreative.videoView)
@@ -71,7 +73,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
     func testButtonTouchUpInsideBlock() {
         let vc = UIViewController()
         let model = CreativeModel(adConfiguration:AdConfiguration())
-        self.videoCreative = PBMVideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
+        self.videoCreative = VideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
         self.videoCreative.viewControllerForPresentingModals = vc
 
         self.videoCreative.videoView.updateControls()
@@ -117,7 +119,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         self.expectationDownloadFailed = self.expectation(description: "Expected downloadFailed to be called")
         self.expectationDidLeaveApp = self.expectation(description: "expectationDidLeaveApp")
         
-        self.videoCreative = PBMVideoCreative(creativeModel:CreativeModel(), transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
+        self.videoCreative = VideoCreative(creativeModel:CreativeModel(), transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
         self.videoCreative.creativeResolutionDelegate = self
         self.videoCreative.videoViewFailedWithError(NSError(domain: "PrebidMobile", code: 123, userInfo: [:]))
 
@@ -125,12 +127,12 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         let model = CreativeModel(adConfiguration:AdConfiguration())
         model.videoFileURL = "http://get_video/small.mp4"
         
-        //Create PBMVideoCreative and start
-        self.videoCreative = PBMVideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
+        //Create VideoCreative and start
+        self.videoCreative = VideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
         self.videoCreative.creativeResolutionDelegate = self
         self.videoCreative.creativeViewDelegate = self
         
-        let state = Factory.createModalState(view: PBMVideoView(),
+        let state = Factory.createModalState(view: VideoView(),
                                              adConfiguration:AdConfiguration(),
                                              displayProperties:InterstitialDisplayProperties())
         self.videoCreative.modalManagerDidLeaveApp(state)
@@ -157,7 +159,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         
         self.videoCreative?.display(rootViewController: UIViewController())
         
-        guard let videoView = self.videoCreative.view as? PBMVideoView else {
+        guard let videoView = self.videoCreative.view as? VideoView else {
             XCTFail("Couldn't get Video View")
             return
         }
@@ -194,7 +196,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         
         self.videoCreative?.display(rootViewController: UIViewController())
         
-        guard let videoView = self.videoCreative.view as? PBMVideoView else {
+        guard let videoView = self.videoCreative.view as? VideoView else {
             XCTFail("Couldn't get Video View")
             return
         }
@@ -214,7 +216,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         let model = CreativeModel(adConfiguration:AdConfiguration())
         model.displayDurationInSeconds = 5
 
-        self.videoCreative = PBMVideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
+        self.videoCreative = VideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
         
         XCTAssertNotNil(self.videoCreative)
         
@@ -238,7 +240,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         let model = CreativeModel(adConfiguration: adConfiguration)
         model.hasCompanionAd = false
 
-        videoCreative = PBMVideoCreative(
+        videoCreative = VideoCreative(
             creativeModel: model,
             transaction: UtilitiesForTesting.createEmptyTransaction(),
             videoData: Data()
@@ -264,7 +266,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         let model = CreativeModel(adConfiguration: adConfiguration)
         model.hasCompanionAd = false
 
-        videoCreative = PBMVideoCreative(
+        videoCreative = VideoCreative(
             creativeModel: model,
             transaction: UtilitiesForTesting.createEmptyTransaction(),
             videoData: Data()
@@ -290,7 +292,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         let model = CreativeModel(adConfiguration: adConfiguration)
         model.hasCompanionAd = false
 
-        videoCreative = PBMVideoCreative(
+        videoCreative = VideoCreative(
             creativeModel: model,
             transaction: UtilitiesForTesting.createEmptyTransaction(),
             videoData: Data()
@@ -316,7 +318,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         model.displayDurationInSeconds = 10
         model.skipOffset = 10
         
-        self.videoCreative = PBMVideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
+        self.videoCreative = VideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
         
         XCTAssertNotNil(self.videoCreative)
         
@@ -374,7 +376,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         var transaction: Transaction? = UtilitiesForTesting.createEmptyTransaction()
         transaction?.measurementWrapper = measurement
         
-        self.videoCreative = PBMVideoCreative(
+        self.videoCreative = VideoCreative(
             creativeModel:mockCreativeModel,
             transaction:transaction!,
             videoData: Data()
@@ -431,7 +433,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         
         let creativeModel = CreativeModel(adConfiguration: adConfiguration)
         
-        self.videoCreative = PBMVideoCreative(
+        self.videoCreative = VideoCreative(
             creativeModel:creativeModel,
             transaction:UtilitiesForTesting.createEmptyTransaction(),
             videoData:Data()
@@ -466,7 +468,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         
         let creativeModel = CreativeModel(adConfiguration: adConfiguration)
         
-        self.videoCreative = PBMVideoCreative(
+        self.videoCreative = VideoCreative(
             creativeModel:creativeModel,
             transaction:UtilitiesForTesting.createEmptyTransaction(),
             videoData:Data()
@@ -490,7 +492,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         expectationVideoResume = expectation(description: "Should resume video")
         
         let model = CreativeModel(adConfiguration: AdConfiguration())
-        self.videoCreative = PBMVideoCreative(creativeModel: model,
+        self.videoCreative = VideoCreative(creativeModel: model,
                                               transaction: UtilitiesForTesting.createEmptyTransaction(),
                                               videoData: Data())
         
@@ -539,7 +541,7 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
     func creativeDidDisplay(_ creative: AbstractCreative) {}
     func creativeFullScreenDidFinish(_ creative: AbstractCreative) {}
     
-    // MARK: - PBMVideoViewDelegate
+    // MARK: - VideoViewDelegate
     
     func videoViewFailedWithError(_ error: Error) {
         self.expectationVideoDidComplete.fulfill()
@@ -588,9 +590,23 @@ class VideoCreativeDelegateTest: XCTestCase, CreativeResolutionDelegate, Creativ
         let model = CreativeModel(adConfiguration:AdConfiguration())
         model.videoFileURL = videoFileURL
         
-        //Create and start creative
-        self.videoCreative = PBMVideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: Data())
-        self.videoCreative.creativeResolutionDelegate = self
-        self.videoCreative.creativeViewDelegate = self
+        // The creative needs the real video data: empty data fails the player item, so the creative is never ready.
+        let downloadCompleted = self.expectation(description: "downloadCompleted")
+        
+        let url = URL(string: videoFileURL)
+        let downloader = DownloadDataHelper(serverConnection: connection)
+        downloader.downloadData(for: url, maxSize: VideoCreative.maxSizeForPreRenderContent, completionClosure: { (data:Data?, error:Error?) in
+            
+            DispatchQueue.main.async {
+                //Create and start creative
+                self.videoCreative = VideoCreative(creativeModel:model, transaction:UtilitiesForTesting.createEmptyTransaction(), videoData: data!)
+                self.videoCreative.creativeResolutionDelegate = self
+                self.videoCreative.creativeViewDelegate = self
+                
+                downloadCompleted.fulfill()
+            }
+        })
+        
+        wait(for: [downloadCompleted], timeout: 15)
     }
 }

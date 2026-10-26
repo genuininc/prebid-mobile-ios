@@ -61,60 +61,28 @@ public class VastAdInfo: NSObject {
     /// VAST tracking event name (`start`, `firstQuartile`, `midpoint`, `thirdQuartile`,
     /// `complete`, `pause`, …) → URLs.
     public internal(set) var trackingEvents: [String: [String]] = [:]
-
-    /// Used by the Objective-C parser to fill in the result.
-    @_spi(PBMInternal) public func fill(
-        adID: String?,
-        title: String?,
-        advertiser: String?,
-        duration: TimeInterval,
-        skipOffset: NSNumber?,
-        mediaFiles: [VastMediaFileInfo],
-        clickThroughURL: String?,
-        clickTrackingURLs: [String],
-        impressionURLs: [String],
-        errorURLs: [String],
-        trackingEvents: [String: [String]]
-    ) {
-        self.adID = adID
-        self.title = title
-        self.advertiser = advertiser
-        self.duration = duration
-        self.skipOffset = skipOffset
-        self.mediaFiles = mediaFiles
-        self.clickThroughURL = clickThroughURL
-        self.clickTrackingURLs = clickTrackingURLs
-        self.impressionURLs = impressionURLs
-        self.errorURLs = errorURLs
-        self.trackingEvents = trackingEvents
-    }
-}
-
-/// Implemented in Objective-C (`PBMVastAdInfoParser_Objc`) on top of the SDK's own VAST
-/// parser and wrapper loader, and created by name, like the other `Factory` types.
-@objc(PBMVastAdInfoParsing) @_spi(PBMInternal) public
-protocol VastAdInfoParsing: NSObjectProtocol {
-    init()
-    func parse(_ data: Data, completion: @escaping (VastAdInfo?) -> Void)
 }
 
 /// Parses VAST markup with the SDK's own VAST parser, following wrappers.
 public enum VastAdInfoParser {
-    private static let parserType: VastAdInfoParsing.Type? = {
-        NSClassFromString("PBMVastAdInfoParser_Objc") as? VastAdInfoParsing.Type
-    }()
 
     /// Calls `completion` on the main queue with the first InLine ad, or `nil` when the markup
     /// isn't VAST, has no ad, or a wrapper can't be resolved.
     public static func parse(_ vast: String, completion: @escaping (VastAdInfo?) -> Void) {
-        guard let data = vast.data(using: .utf8), let parserType else {
+        guard let data = vast.data(using: .utf8) else {
             DispatchQueue.main.async { completion(nil) }
             return
         }
-        let parser = parserType.init()
-        parser.parse(data) { info in
-            // `parser` is held until the wrapper chain has been loaded.
-            withExtendedLifetime(parser) {
+        // `VastAdsBuilder` also loads and follows wrappers and merges their trackers into the InLine ad.
+        let builder = VastAdsBuilder(connection: PrebidServerConnection.shared)
+        builder.buildAds(data) { ads, error in
+            if let error {
+                Log.error("VAST parsing failed: \(error.localizedDescription)")
+            }
+            let inlineAd = ads?.lazy.compactMap { $0 as? VastInlineAd }.first
+            let info = inlineAd.map(info(from:))
+            // `builder` is held until the wrapper chain has been loaded.
+            withExtendedLifetime(builder) {
                 DispatchQueue.main.async { completion(info) }
             }
         }
@@ -125,5 +93,30 @@ public enum VastAdInfoParser {
         await withCheckedContinuation { continuation in
             parse(vast) { continuation.resume(returning: $0) }
         }
+    }
+
+    private static func info(from inlineAd: VastInlineAd) -> VastAdInfo {
+        let linear = inlineAd.creatives.lazy.compactMap { $0 as? VastCreativeLinear }.first
+
+        let info = VastAdInfo()
+        info.adID = inlineAd.identifier
+        info.title = inlineAd.title
+        info.advertiser = inlineAd.advertiser
+        info.duration = linear?.duration ?? 0
+        info.skipOffset = linear?.skipOffset
+        info.mediaFiles = (linear?.mediaFiles ?? []).map {
+            VastMediaFileInfo(url: $0.mediaURI,
+                              type: $0.type,
+                              width: $0.width,
+                              height: $0.height,
+                              bitrate: $0.bitrate?.intValue ?? 0,
+                              isStreaming: $0.streamingDeliver)
+        }
+        info.clickThroughURL = linear?.clickThroughURI
+        info.clickTrackingURLs = linear?.clickTrackingURIs ?? []
+        info.impressionURLs = inlineAd.impressionURIs
+        info.errorURLs = inlineAd.errorURIs
+        info.trackingEvents = linear?.vastTrackingEvents.trackingEvents ?? [:]
+        return info
     }
 }

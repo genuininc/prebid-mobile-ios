@@ -18,11 +18,11 @@ import XCTest
 
 @_spi(PBMInternal) @testable import PrebidMobile
 
-class VideoEventsTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate {
+class VideoEventsTest : XCTestCase, CreativeViewDelegate, VideoViewDelegate {
     
     let viewController = MockViewController()
     let modalManager = ModalManager()
-    var pbmVideoCreative:PBMVideoCreative!
+    var pbmVideoCreative:VideoCreative!
     var expectationVideoDidComplete:XCTestExpectation!
     var expectationCreativeDidComplete:XCTestExpectation!
     var expectationDownloadCompleted:XCTestExpectation!
@@ -115,7 +115,7 @@ class VideoEventsTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate {
         
         //Get a Creative
         
-        let creativeFactory = PBMCreativeFactory(serverConnection:connection, transaction: transaction, finishedCallback: { creatives, error in
+        let creativeFactory = CreativeFactory(serverConnection:connection, transaction: transaction, finishedCallback: { creatives, error in
             
             if (error != nil) {
                 XCTFail("error: \(error?.localizedDescription ?? "")")
@@ -123,8 +123,8 @@ class VideoEventsTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate {
             
             self.expectationDownloadCompleted.fulfill()
             expectationVideoAdLoaded.fulfill()
-            guard let pbmVideoCreative = creatives?.first as? PBMVideoCreative else {
-                XCTFail("Could not cast creative as PBMVideoCreative")
+            guard let pbmVideoCreative = creatives?.first as? VideoCreative else {
+                XCTFail("Could not cast creative as VideoCreative")
                 return
             }
             
@@ -169,7 +169,7 @@ class VideoEventsTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate {
     func creativeFullScreenDidFinish(_ creative: AbstractCreative) {}
     func creativeDidSendRewardedEvent(_ creative: AbstractCreative) {}
     
-    // MARK: - PBMVideoViewDelegate
+    // MARK: - VideoViewDelegate
     
     func videoViewFailedWithError(_ error: Error) {}
     func videoViewReadyToDisplay() {}

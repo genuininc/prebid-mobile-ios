@@ -1,0 +1,48 @@
+//
+// Copyright 2018-2025 Prebid.org, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+// http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+import Foundation
+
+class VastCreativeLinear: VastCreativeAbstract {
+
+    var icons = [VastIcon]()
+    var skipOffset: NSNumber?
+    var duration: TimeInterval = 0
+    var mediaFiles = [VastMediaFile]()
+    var vastTrackingEvents = VastTrackingEvents()
+
+    var clickThroughURI: String?
+    var clickTrackingURIs = [String]()
+
+    override init() {
+        super.init()
+    }
+
+    func bestMediaFile() -> VastMediaFile? {
+        let eligibleMediaFiles = mediaFiles.filter {
+            PrebidConstants.SUPPORTED_VIDEO_MIME_TYPES.contains($0.type)
+        }
+
+        // choose the one with the highest resolution that is acceptable
+        guard var bestMediaFile = eligibleMediaFiles.first else {
+            return nil
+        }
+        // Width and height come straight from the VAST XML; wrapping multiplication is what the ObjC compiled to, `*` would trap.
+        for mediaFile in eligibleMediaFiles where mediaFile.width &* mediaFile.height > bestMediaFile.width &* bestMediaFile.height {
+            bestMediaFile = mediaFile
+        }
+        return bestMediaFile
+    }
+}

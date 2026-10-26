@@ -36,7 +36,7 @@ class PBMVideoViewPlaybackStateTest: XCTestCase, CreativeResolutionDelegate {
 
     let connection = UtilitiesForTesting.createConnectionForMockedTest()
 
-    var videoCreative: PBMVideoCreative!
+    var videoCreative: VideoCreative!
     var expectationDownloadCompleted: XCTestExpectation?
     var expectationCreativeReady: XCTestExpectation?
 
@@ -62,12 +62,12 @@ class PBMVideoViewPlaybackStateTest: XCTestCase, CreativeResolutionDelegate {
     // MARK: - States without a player
 
     func testInitialStateIsUnstarted() {
-        let videoView = PBMVideoView(eventManager: EventManager())
+        let videoView = VideoView(eventManager: EventManager())
         XCTAssertEqual(videoView.playbackState, .unstarted)
     }
 
     func testPauseAndResumeWithoutPlayerKeepState() {
-        let videoView = PBMVideoView(eventManager: EventManager())
+        let videoView = VideoView(eventManager: EventManager())
 
         videoView.pause()
         XCTAssertEqual(videoView.playbackState, .unstarted)
@@ -408,11 +408,11 @@ class PBMVideoViewPlaybackStateTest: XCTestCase, CreativeResolutionDelegate {
                                         isRewarded: Bool = false,
                                         autoCloseOnCompletion: Bool = true,
                                         hasCompanionAd: Bool = true,
-                                        beforeAssertions: ((PBMVideoView) -> Void)? = nil,
+                                        beforeAssertions: ((VideoView) -> Void)? = nil,
                                         delayBeforeAssertions: TimeInterval = 0,
                                         file: StaticString = #file,
                                         line: UInt = #line,
-                                        assertions: @escaping (PBMVideoView) -> Void) {
+                                        assertions: @escaping (VideoView) -> Void) {
         setupVideoCreative(
             isInterstitial: isInterstitial,
             isRewarded: isRewarded,
@@ -428,7 +428,7 @@ class PBMVideoViewPlaybackStateTest: XCTestCase, CreativeResolutionDelegate {
         }
         self.waitForExpectations(timeout: 10, handler: nil)
 
-        guard let videoView = self.videoCreative.view as? PBMVideoView else {
+        guard let videoView = self.videoCreative.view as? VideoView else {
             XCTFail("Couldn't get Video View", file: file, line: line)
             return
         }
@@ -516,10 +516,10 @@ class PBMVideoViewPlaybackStateTest: XCTestCase, CreativeResolutionDelegate {
         let url = URL(string: model.videoFileURL!)
         let downloader = DownloadDataHelper(serverConnection: connection)
         downloader.downloadData(for: url,
-                                maxSize: PBMVideoCreative.maxSizeForPreRenderContent,
+                                maxSize: VideoCreative.maxSizeForPreRenderContent,
                                 completionClosure: { (data: Data?, error: Error?) in
             DispatchQueue.main.async {
-                self.videoCreative = PBMVideoCreative(creativeModel: model,
+                self.videoCreative = VideoCreative(creativeModel: model,
                                                       transaction: UtilitiesForTesting.createEmptyTransaction(),
                                                       videoData: data!)
                 self.videoCreative.creativeResolutionDelegate = self

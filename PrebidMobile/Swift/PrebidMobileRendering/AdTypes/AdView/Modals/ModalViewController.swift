@@ -36,13 +36,13 @@ public class ModalViewController: UIViewController {
 
     // MARK: - Lifecycle
     
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
         view.backgroundColor = .black
     }
     
-    public required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         super.init(coder: coder)
         
         view.backgroundColor = .black
@@ -129,7 +129,7 @@ public class ModalViewController: UIViewController {
         modalViewControllerDelegate?.modalViewControllerCloseButtonTapped(self)
     }
 
-    public func addFriendlyObstructions(toMeasurementSession session: OMSession?) {
+    func addFriendlyObstructions(toMeasurementSession session: OMSession?) {
         guard let session else { return }
         session.addFriendlyObstruction(view, purpose: .modalViewControllerView)
         session.addFriendlyObstruction(closeButtonDecorator.button, purpose: .modalViewControllerClose)
@@ -198,7 +198,7 @@ public class ModalViewController: UIViewController {
     }
 
     private func configureCloseButton() {
-        if let webView = modalState?.view as? WebView_Protocol {
+        if let webView = modalState?.view as? WebView {
             closeButtonDecorator.isMRAID = webView.isMRAID
         }
 

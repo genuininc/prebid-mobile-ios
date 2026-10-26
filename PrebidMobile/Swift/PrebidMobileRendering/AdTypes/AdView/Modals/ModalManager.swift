@@ -17,21 +17,20 @@
 import Foundation
 import UIKit
 
-@objc(PBMModalManager) @_spi(PBMInternal) public
+@objc(PBMModalManager)
 class ModalManager: NSObject, ModalViewControllerDelegate {
     weak var delegate: ModalManagerDelegate?
     
-    @objc public var modalViewController: ModalViewController?
+    var modalViewController: ModalViewController?
     
     //The VC class to use to display modals. Defaults is nil.
     var modalViewControllerClass: ModalViewController.Type?
     
     var modalStateStack = [ModalState]()
-    var deferredModalState: DeferredModalState?
     
     var isModalDismissing: Bool = false
     
-    @objc public init(delegate: ModalManagerDelegate? = nil) {
+    init(delegate: ModalManagerDelegate? = nil) {
         self.delegate = delegate
     }
     
@@ -44,7 +43,7 @@ class ModalManager: NSObject, ModalViewControllerDelegate {
         }
     }
     
-    @objc public func forceOrientation(_ orientation: UIInterfaceOrientation) {
+    func forceOrientation(_ orientation: UIInterfaceOrientation) {
         //DISCLAIMER: Forcing orientation does not work for iPads
         DispatchQueue.main.async {
             Log.info("Forcing orientation to \(orientation.description)")
@@ -52,21 +51,11 @@ class ModalManager: NSObject, ModalViewControllerDelegate {
         }
     }
     
-    @objc public func pushModal(_ state: ModalState,
+    func pushModal(_ state: ModalState,
                                 fromRootViewController: UIViewController,
                                 animated: Bool,
                                 shouldReplace: Bool,
                                 completionHandler: VoidBlock?) -> VoidBlock? {
-        
-        if let deferredModalState {
-            guard state === deferredModalState.modalState else {
-                Log.error("Attempting to push modal state while another deferred state is being prepared")
-                return nil
-            }
-            
-            // Previously deferred modalState has been resolved and is being pushed
-            self.deferredModalState = nil // no longer deffered
-        }
         
         if shouldReplace, !modalStateStack.isEmpty {
             modalStateStack.removeLast()
@@ -85,17 +74,6 @@ class ModalManager: NSObject, ModalViewControllerDelegate {
             }
             
             self.removeModal(state)
-        }
-    }
-    
-    func pushDeferredModal(_ deferredModalState: any DeferredModalState) {
-        if self.deferredModalState == nil, !isModalDismissing {
-            self.deferredModalState = deferredModalState
-            deferredModalState.prepareAndPush(modalManager: self) { [weak self, weak deferredModalState] in
-                if let self, let deferredModalState, deferredModalState === self.deferredModalState {
-                    self.deferredModalState = nil
-                }
-            }
         }
     }
     
@@ -154,7 +132,7 @@ class ModalManager: NSObject, ModalViewControllerDelegate {
         }
     }
     
-    @objc public func creativeDisplayCompleted(_ creative: AbstractCreative) {
+    func creativeDisplayCompleted(_ creative: AbstractCreative) {
         modalViewController?.creativeDisplayCompleted(creative)
     }
     
@@ -310,13 +288,13 @@ class ModalManager: NSObject, ModalViewControllerDelegate {
     //TODO: Consider moving to PBMAbstractCreative
     // MARK: PBMModalViewControllerDelegate
     
-    public func modalViewControllerCloseButtonTapped(_ modalViewController: ModalViewController) {
+    func modalViewControllerCloseButtonTapped(_ modalViewController: ModalViewController) {
         if let modalState = modalViewController.modalState {
             removeModal(modalState)
         }
     }
     
-    public func modalViewControllerDidLeaveApp() {
+    func modalViewControllerDidLeaveApp() {
         DispatchQueue.main.async { [weak self] in
             guard let self else {
                 return

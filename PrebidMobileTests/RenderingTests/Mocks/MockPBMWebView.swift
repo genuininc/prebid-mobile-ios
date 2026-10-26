@@ -15,16 +15,16 @@
 
 import Foundation
 
-@testable import PrebidMobile
+@_spi(PBMInternal) @testable import PrebidMobile
 
 typealias MockMRAIDResizeHandler = (MRAIDResizeProperties?) -> Void
 typealias MockMRAIDExpandHandler = (MRAIDExpandProperties?) -> Void
 
-class MockPBMWebView: PBMWebView {
+class MockPBMWebView: WebView {
     
     var mock_loadHTML: ((String, URL?, Bool) -> Void)?
-    override func loadHTML(_ html: String, baseURL: URL?, injectMraidJs: Bool) {
-        self.mock_loadHTML?(html, baseURL, injectMraidJs)
+    override func loadHTML(_ html: String?, baseURL: URL?, injectMraidJs: Bool) {
+        self.mock_loadHTML?(html ?? "", baseURL, injectMraidJs)
     }
     
     var mock_changeToMRAIDState: ((MRAIDState) -> Void)?
@@ -32,7 +32,7 @@ class MockPBMWebView: PBMWebView {
         self.mock_changeToMRAIDState?(state)
     }
     
-    override func prepareForMRAID(withRootViewController: UIViewController) {
+    override func prepareForMRAID(withRootViewController: UIViewController?) {
         self.isViewable = true
     }
     
@@ -41,9 +41,9 @@ class MockPBMWebView: PBMWebView {
         self.mock_PBMAddCropAndCenterConstraints?(initialWidth, initialHeight)
     }
     
-    var mock_MRAID_error: ((String, PBMMRAIDAction) -> Void)?
-    override func MRAID_error(_ message: String, action: PBMMRAIDAction) {
-        self.mock_MRAID_error?(message, action)
+    var mock_MRAID_error: ((String, MRAIDAction) -> Void)?
+    override func MRAID_error(_ message: String, action: String) {
+        self.mock_MRAID_error?(message, MRAIDAction(rawValue: action))
     }
     
     var mock_MRAID_getResizeProperties: ((MockMRAIDResizeHandler) -> Void)?

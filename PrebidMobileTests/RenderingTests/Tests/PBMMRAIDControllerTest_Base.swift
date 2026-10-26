@@ -29,7 +29,7 @@ class PBMMRAIDControllerTest_Base: XCTestCase, CreativeViewDelegate {
     var mockWebView: MockPBMWebView!
     var mockViewController: MockViewController!
     
-    var MRAIDController: PBMMRAIDController!
+    var mraidController: MRAIDController!
     
     override func setUp() {
         
@@ -144,7 +144,7 @@ class PBMMRAIDControllerTest_Base: XCTestCase, CreativeViewDelegate {
      - action: If `shouldFulfill`, the action to check against
      */
     
-    func mraidErrorExpectation(shouldFulfill: Bool, message expectedMessage: String? = nil, action expectedAction: PBMMRAIDAction? = nil, file: StaticString = #file, line: UInt = #line) {
+    func mraidErrorExpectation(shouldFulfill: Bool, message expectedMessage: String? = nil, action expectedAction: MRAIDAction? = nil, file: StaticString = #file, line: UInt = #line) {
         let exp = self.expectation(description: "Should \(shouldFulfill ? "" : "not ")call webview with an MRAID error")
         exp.isInverted = !shouldFulfill
         self.mockWebView.mock_MRAID_error = { (actualMessage, actualAction) in
@@ -156,8 +156,8 @@ class PBMMRAIDControllerTest_Base: XCTestCase, CreativeViewDelegate {
         }
     }
     
-    func createLoader(connection: PrebidServerConnectionProtocol) -> PBMCreativeFactoryDownloadDataCompletionClosure {
-        let result: PBMCreativeFactoryDownloadDataCompletionClosure =  {url, completionBlock in
+    func createLoader(connection: PrebidServerConnectionProtocol) -> (URL, @escaping PBMDownloadDataCompletionClosure) -> Void {
+        let result: (URL, @escaping PBMDownloadDataCompletionClosure) -> Void =  {url, completionBlock in
             let downloader = DownloadDataHelper(serverConnection:connection)
             downloader.downloadData(for: url, completionClosure: { (data:Data?, error:Error?) in
                 completionBlock(data,error)

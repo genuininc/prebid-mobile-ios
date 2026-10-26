@@ -16,17 +16,17 @@
 
 import Foundation
 
-@objc(PBMAdModelEventTracker) @_spi(PBMInternal) public
+@objc(PBMAdModelEventTracker)
 class AdModelEventTracker: NSObject, EventTrackerProtocol {
     private(set) weak var creativeModel: CreativeModel?
     let serverConnection: PrebidServerConnectionProtocol
     
-    @objc public init(creativeModel: CreativeModel, serverConnection: PrebidServerConnectionProtocol) {
+    init(creativeModel: CreativeModel, serverConnection: PrebidServerConnectionProtocol) {
         self.creativeModel = creativeModel
         self.serverConnection = serverConnection
     }
     
-    public func trackEvent(_ event: TrackingEvent) {
+    func trackEvent(_ event: TrackingEvent) {
         let eventName = event.description
         
         guard let urls = creativeModel?.trackingURLs[eventName] else {
@@ -39,13 +39,28 @@ class AdModelEventTracker: NSObject, EventTrackerProtocol {
         }
     }
     
-    public func trackVideoAdLoaded(_ parameters: VideoVerificationParameters) {
+    // Requests the VAST `<Error>` URIs of the ad with the `[ERRORCODE]` macro filled in. The player must call
+    // the ad's URIs and those of every Wrapper on the way to it (VAST 4.3, section 2.3.6.2).
+    func trackVastError(_ errorCode: VastErrorCode) {
+        let errorKey = TrackingEvent.error.description
+        
+        guard let urls = creativeModel?.trackingURLs[errorKey] else {
+            Log.info("No tracking URL(s) for event \(errorKey)")
+            return
+        }
+        
+        urls.forEach { url in
+            serverConnection.fireAndForget(errorCode.replacingMacro(in: url))
+        }
     }
     
-    public func trackStartVideo(duration: TimeInterval, volume: Double) {
+    func trackVideoAdLoaded(_ parameters: VideoVerificationParameters) {
+    }
+    
+    func trackStartVideo(duration: TimeInterval, volume: Double) {
         trackEvent(.start)
     }
     
-    public func trackVolumeChanged(playerVolume: Double, deviceVolume: Double) {
+    func trackVolumeChanged(playerVolume: Double, deviceVolume: Double) {
     }
 }

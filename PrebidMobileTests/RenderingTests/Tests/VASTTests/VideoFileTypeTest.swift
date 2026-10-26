@@ -18,10 +18,10 @@ import XCTest
 
 @_spi(PBMInternal) @testable import PrebidMobile
 
-class VideoFileTypeTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate {
+class VideoFileTypeTest : XCTestCase, CreativeViewDelegate, VideoViewDelegate {
     
     let viewController = MockViewController()
-    var pbmVideoCreative:PBMVideoCreative!
+    var pbmVideoCreative:VideoCreative!
     var expectationVideoDidComplete:XCTestExpectation!
     var expectationDownloadCompleted:XCTestExpectation!
     var expectationCreativeDidDisplay:XCTestExpectation!
@@ -93,7 +93,7 @@ class VideoFileTypeTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate
             transaction.creativeModels = [creativeModel]
 
             //Get a Creative
-            let creativeFactory = PBMCreativeFactory(serverConnection:connection, transaction: transaction, finishedCallback: { creativesArray, error in
+            let creativeFactory = CreativeFactory(serverConnection:connection, transaction: transaction, finishedCallback: { creativesArray, error in
                 
                     if (error != nil) {
                         XCTFail("error: \(error?.localizedDescription ?? "")")
@@ -101,8 +101,8 @@ class VideoFileTypeTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate
                     
                     self.expectationDownloadCompleted.fulfill()
                     
-                    guard let pbmVideoCreative = creativesArray?.first as? PBMVideoCreative else {
-                        XCTFail("Could not cast creative as PBMVideoCreative")
+                    guard let pbmVideoCreative = creativesArray?.first as? VideoCreative else {
+                        XCTFail("Could not cast creative as VideoCreative")
                         return
                     }
                     
@@ -147,7 +147,7 @@ class VideoFileTypeTest : XCTestCase, CreativeViewDelegate, PBMVideoViewDelegate
     
     func creativeDidSendRewardedEvent(_ creative: AbstractCreative) {}
     
-    // MARK: - PBMVideoViewDelegate
+    // MARK: - VideoViewDelegate
     
     func videoViewFailedWithError(_ error: Error) {}
     func videoViewReadyToDisplay() {}

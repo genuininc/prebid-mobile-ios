@@ -12,7 +12,7 @@ let package = Package(
     products: [
         .library(
             name: "PrebidMobile",
-            targets: ["PrebidMobile", "__PrebidMobileInternal"]
+            targets: ["PrebidMobile"]
         ),
         .library(
             name: "PrebidMobileAdMobAdapters",
@@ -34,21 +34,11 @@ let package = Package(
     targets: [
         .target(
             name: "PrebidMobile",
-            path: "PrebidMobile",
-            sources: ["Swift"]
-        ),
-        .target(
-            name: "__PrebidMobileInternal",
             dependencies: [
-                "PrebidMobile",
                 "PrebidMobileOMSDK",
             ],
             path: "PrebidMobile",
-            sources: ["Objc"],
-            cSettings: [
-                .headerSearchPath("./Objc/PrivateHeaders"),
-                .define("PrebidMobile_SPM", to: "1"),
-            ]
+            sources: ["Swift"]
         ),
         .binaryTarget(
             name: "PrebidMobileOMSDK",
