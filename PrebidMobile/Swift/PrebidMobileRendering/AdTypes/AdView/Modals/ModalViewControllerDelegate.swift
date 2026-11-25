@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMModalViewControllerDelegate)
+@objc(GenuinPBMModalViewControllerDelegate)
 protocol ModalViewControllerDelegate {
     func modalViewControllerCloseButtonTapped(_ modalViewController: ModalViewController)
     func modalViewControllerDidLeaveApp()

@@ -15,7 +15,7 @@
 
 import Foundation
 
-@objc(PBMMediationNativeUtils) @objcMembers
+@objc(GenuinPBMMediationNativeUtils) @objcMembers
 public class MediationNativeUtils: NSObject {
     public static func findNative(in extras: [AnyHashable: Any]) -> Result<NativeAd, Error> {
         guard let response = extras[PBMMediationAdNativeResponseKey] as? [String: AnyObject] else {

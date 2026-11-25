@@ -24,7 +24,7 @@ import UIKit
  *  All `Creatives` must conform to this protocol. Each creative has-a model which contains the
  *  creative info, and must implement a few methods for handling display of the creative.
  */
-@objc(PBMAbstractCreative)
+@objc(GenuinPBMAbstractCreative)
 protocol AbstractCreative: NSObjectProtocol {
     
     weak var transaction: Transaction? { get }

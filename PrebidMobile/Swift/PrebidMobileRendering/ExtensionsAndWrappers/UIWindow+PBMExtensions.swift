@@ -21,7 +21,7 @@ extension UIWindow {
         UIApplication.shared.keyWindow?.visibleViewController()
     }
 
-    @objc public func visibleViewController() -> UIViewController? {
+    @objc(genuinPBMVisibleViewController) public func visibleViewController() -> UIViewController? {
         guard let root = rootViewController else { return nil }
         return UIWindow.getVisibleViewControllerFrom(root)
     }

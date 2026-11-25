@@ -15,7 +15,7 @@
 
 import UIKit
 
-@objc(PBMDisplayView)
+@objc(GenuinPBMDisplayView)
 @objcMembers public
 class DisplayView: UIView, PrebidMobileDisplayViewProtocol, AdViewManagerDelegate, ModalManagerDelegate {
 

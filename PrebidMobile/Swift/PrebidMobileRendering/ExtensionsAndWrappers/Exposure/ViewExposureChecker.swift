@@ -15,7 +15,7 @@
 
 import UIKit
 
-@objc(PBMViewExposureChecker)
+@objc(GenuinPBMViewExposureChecker)
 class ViewExposureChecker: NSObject {
 
     static func exposure(of view: UIView) -> ViewExposure {

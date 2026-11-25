@@ -16,7 +16,7 @@
 import Foundation
 
 /// OpenRTB 2.6 `imp.audio` object (section 3.2.8).
-@objc(PBMORTBAudio)
+@objc(GenuinPBMORTBAudio)
 public class ORTBAudio: NSObject, PBMJsonCodable {
 
     // MARK: - Properties

@@ -19,7 +19,7 @@ import Foundation
 /**
  Provides info about received ad.
  */
-@objc(PBMAdDetails)
+@objc(GenuinPBMAdDetails)
 public class AdDetails: NSObject {
     
     /**

@@ -15,7 +15,7 @@
 
 import Foundation
 
-@objc(PBMTimerInterface) public protocol TimerInterface: NSObjectProtocol {
+@objc(GenuinPBMTimerInterface) public protocol TimerInterface: NSObjectProtocol {
     func invalidate()
 }
 

@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMORTBSDKConfiguration)
+@objc(GenuinPBMORTBSDKConfiguration)
 open class ORTBSDKConfiguration: NSObject, PBMJsonCodable {
     @objc public var cftBanner: NSNumber?
     @objc public var cftPreRender: NSNumber?

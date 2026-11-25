@@ -17,7 +17,7 @@ import UIKit
 
 extension UIView {
 
-    @objc(PBMAddCropAndCenterConstraintsWithInitialWidth:initialHeight:)
+    @objc(GenuinPBMAddCropAndCenterConstraintsWithInitialWidth:initialHeight:)
     public func PBMAddCropAndCenterConstraints(initialWidth: CGFloat, initialHeight: CGFloat) {
         guard let superview = superview else { return }
         translatesAutoresizingMaskIntoConstraints = false

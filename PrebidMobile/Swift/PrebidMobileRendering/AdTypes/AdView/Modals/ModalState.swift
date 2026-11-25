@@ -20,7 +20,7 @@ import UIKit
 typealias ModalStatePopHandler = (_ poppedState: ModalState?) -> Void
 typealias ModalStateAppLeavingHandler = (_ leavingState: ModalState?) -> Void
 
-@objc(PBMModalState)
+@objc(GenuinPBMModalState)
 protocol ModalState {
     
     var adConfiguration: AdConfiguration? { get }

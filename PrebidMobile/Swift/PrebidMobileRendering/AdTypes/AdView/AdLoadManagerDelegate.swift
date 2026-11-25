@@ -15,7 +15,7 @@
 
 import Foundation
 
-@objc(PBMAdLoadManagerDelegate)
+@objc(GenuinPBMAdLoadManagerDelegate)
 protocol AdLoadManagerDelegate {
     @objc(loadManager:didLoadTransaction:)
     func loadManager(_ loadManager: AdLoadManagerProtocol, didLoad transaction: Transaction)

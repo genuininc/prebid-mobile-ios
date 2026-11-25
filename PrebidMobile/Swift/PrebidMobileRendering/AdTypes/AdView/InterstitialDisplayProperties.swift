@@ -17,7 +17,7 @@
 import Foundation
 import UIKit
 
-@objc(PBMInterstitialDisplayProperties)
+@objc(GenuinPBMInterstitialDisplayProperties)
 public class InterstitialDisplayProperties: NSObject, Copyable {
     
     var closeDelay: TimeInterval = 0

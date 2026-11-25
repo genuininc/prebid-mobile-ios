@@ -15,7 +15,7 @@
 
 import Foundation
 
-@objc(PBMLogLevel) @objcMembers
+@objc(GenuinPBMLogLevel) @objcMembers
 public class LogLevel: NSObject, RawRepresentable {
     
     public typealias RawValue = Int

@@ -17,7 +17,7 @@ import Foundation
 
 typealias TransactionFactoryCallback = (_ transaction: Transaction?, _ error: Error?) -> Void
 
-@objc(PBMTransactionFactory)
+@objc(GenuinPBMTransactionFactory)
 protocol TransactionFactory: NSObjectProtocol {
 
     @objc(initWithBid:adConfiguration:connection:callback:)

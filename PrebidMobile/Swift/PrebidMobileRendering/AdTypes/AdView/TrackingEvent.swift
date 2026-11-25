@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMTrackingEvent)
+@objc(GenuinPBMTrackingEvent)
 public enum TrackingEvent: Int {
     case request = 0
     case impression

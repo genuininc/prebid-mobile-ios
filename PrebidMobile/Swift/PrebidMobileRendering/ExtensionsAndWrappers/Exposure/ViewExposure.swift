@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMViewExposure)
+@objc(GenuinPBMViewExposure)
 protocol ViewExposure: NSObjectProtocol {
     static func zeroExposure() -> ViewExposure
     

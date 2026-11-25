@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMCreativeViewDelegate)
+@objc(GenuinPBMCreativeViewDelegate)
 protocol CreativeViewDelegate: NSObjectProtocol {
     func creativeDidComplete(_ creative: AbstractCreative)
     func creativeDidDisplay(_ creative: AbstractCreative)

@@ -16,7 +16,7 @@
 import Foundation
 
 /// Represents a request object for native markup, including details about the ad's context, placement, and supported features.
-@objc(PBMNativeMarkupRequestObject) @objcMembers
+@objc(GenuinPBMNativeMarkupRequestObject) @objcMembers
 public class NativeMarkupRequestObject: NSObject, NSCopying, PBMJsonEncodable {
     
     /// [Recommended]

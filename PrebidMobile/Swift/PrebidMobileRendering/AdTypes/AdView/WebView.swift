@@ -20,7 +20,7 @@ import AdSupport
 
 typealias JSEvaluatingBlock = (_ command: String?, _ jsResult: Any?, _ error: Error?) -> Void
 
-@objc(PBMWebViewState)
+@objc(GenuinPBMWebViewState)
 enum WebViewState: Int {
     case unloaded
     case loading

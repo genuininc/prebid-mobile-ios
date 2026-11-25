@@ -23,7 +23,7 @@ import Foundation
      - AdModelEventTracker
      - OpenMeasurementEventTracker
  */
-@objc(PBMEventTrackerProtocol)
+@objc(GenuinPBMEventTrackerProtocol)
 public protocol EventTrackerProtocol {
     
     func trackEvent(_ event: TrackingEvent)

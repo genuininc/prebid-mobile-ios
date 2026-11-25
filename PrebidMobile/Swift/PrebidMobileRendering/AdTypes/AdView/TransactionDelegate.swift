@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMTransactionDelegate)
+@objc(GenuinPBMTransactionDelegate)
 protocol TransactionDelegate {
     func transactionReadyForDisplay(_ transaction: Transaction)
     func transactionFailedToLoad(_ transaction: Transaction, error: Error)

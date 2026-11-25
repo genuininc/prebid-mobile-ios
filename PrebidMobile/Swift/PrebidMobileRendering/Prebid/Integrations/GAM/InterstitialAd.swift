@@ -15,7 +15,7 @@
     
 import UIKit
 
-@objc(PBMInterstitialAd)
+@objc(GenuinPBMInterstitialAd)
 public protocol InterstitialAd: PrimaryAdRequesterProtocol {
     /**
      @abstract Return whether an interstitial is ready for display

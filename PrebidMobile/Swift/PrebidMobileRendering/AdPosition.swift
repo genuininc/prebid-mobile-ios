@@ -29,7 +29,7 @@ import Foundation
 /// 5 Footer
 /// 6 Sidebar
 /// 7 Full Screen
-@objc(PBMAdPosition)
+@objc(GenuinPBMAdPosition)
 public enum AdPosition: Int {
     
     /// -1 Undefined

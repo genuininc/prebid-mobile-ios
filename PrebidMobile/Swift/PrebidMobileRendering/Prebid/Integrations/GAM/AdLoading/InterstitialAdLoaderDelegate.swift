@@ -17,7 +17,7 @@
 import Foundation
 import UIKit
 
-@objc(PBMInterstitialAdLoaderDelegate)
+@objc(GenuinPBMInterstitialAdLoaderDelegate)
 protocol InterstitialAdLoaderDelegate {
     
     // Loading callbacks

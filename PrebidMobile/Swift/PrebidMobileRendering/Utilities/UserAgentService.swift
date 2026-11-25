@@ -15,7 +15,7 @@
 
 import WebKit
 
-@objc(PBMUserAgentService) @objcMembers
+@objc(GenuinPBMUserAgentService) @objcMembers
 public class UserAgentService: NSObject {
     
     public static let shared = UserAgentService()

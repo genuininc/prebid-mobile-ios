@@ -17,7 +17,7 @@ import Foundation
 
 /// Contains information about bid.
 @objcMembers
-@objc(PBMBidInfo)
+@objc(GenuinPBMBidInfo)
 public class BidInfo: NSObject {
     
     /// Key to get Prebid win event from `events`

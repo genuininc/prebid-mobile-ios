@@ -15,7 +15,7 @@
 
 import Foundation
 
-@objc(PBMPrimaryAdRequesterProtocol)
+@objc(GenuinPBMPrimaryAdRequesterProtocol)
 public protocol PrimaryAdRequesterProtocol: NSObjectProtocol {
     
     /**

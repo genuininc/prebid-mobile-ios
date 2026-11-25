@@ -16,7 +16,7 @@
 import Foundation
 
 /// One `MediaFile` of a parsed VAST linear creative.
-@objc(PBMVastMediaFileInfo) @objcMembers
+@objc(GenuinPBMVastMediaFileInfo) @objcMembers
 public class VastMediaFileInfo: NSObject {
     public let url: String
     public let type: String
@@ -44,7 +44,7 @@ public class VastMediaFileInfo: NSObject {
 /// Wrappers are already followed, and their impression, error, click and tracking URLs merged
 /// in, so firing what is here covers the whole chain. Produced by `VastAdInfoParser`, usually
 /// from `BidInfo.winningBid?.adm`.
-@objc(PBMVastAdInfo) @objcMembers
+@objc(GenuinPBMVastAdInfo) @objcMembers
 public class VastAdInfo: NSObject {
     public internal(set) var adID: String?
     public internal(set) var title: String?

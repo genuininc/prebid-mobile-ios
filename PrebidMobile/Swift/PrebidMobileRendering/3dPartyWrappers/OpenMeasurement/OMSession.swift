@@ -15,7 +15,7 @@
 
 import UIKit
 
-@objc(PBMOMSession)
+@objc(GenuinPBMOMSession)
 public protocol OMSession: NSObjectProtocol {
     
     var eventTracker: EventTrackerProtocol { get }

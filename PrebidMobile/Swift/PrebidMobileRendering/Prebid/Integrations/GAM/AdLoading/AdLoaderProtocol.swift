@@ -15,7 +15,7 @@
 
 import Foundation
 
-@objc(PBMAdLoaderProtocol)
+@objc(GenuinPBMAdLoaderProtocol)
 protocol AdLoaderProtocol: NSObjectProtocol {
     
     weak var flowDelegate: AdLoaderFlowDelegate? { get set }

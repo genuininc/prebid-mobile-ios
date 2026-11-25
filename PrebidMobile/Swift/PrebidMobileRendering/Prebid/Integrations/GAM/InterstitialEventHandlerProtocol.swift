@@ -15,7 +15,7 @@
 
 import Foundation
 
-@objc(PBMInterstitialEventHandlerProtocol)
+@objc(GenuinPBMInterstitialEventHandlerProtocol)
 public protocol InterstitialEventHandlerProtocol : InterstitialAd {
 
     /// Delegate for custom event handler to inform the PBM SDK about the events related to the ad server communication.

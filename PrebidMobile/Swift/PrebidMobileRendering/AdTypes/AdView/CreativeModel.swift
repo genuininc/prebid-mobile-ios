@@ -74,7 +74,7 @@ class CreativeModel: NSObject {
 
 /// A video ad's AdChoices icon (VAST `<Icon program="AdChoices">` with a `StaticResource`), for an
 /// app that draws it next to the ad. `BannerView` fires its view and click trackers.
-@objc(PBMVideoAdChoices) @objcMembers
+@objc(GenuinPBMVideoAdChoices) @objcMembers
 public class VideoAdChoices: NSObject {
     public let imageURL: String
     public let clickThroughURL: String?

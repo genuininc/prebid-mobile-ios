@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMAdViewManager)
+@objc(GenuinPBMAdViewManager)
 protocol AdViewManager: CreativeViewDelegate {
         
     var adConfiguration: AdConfiguration { get set }

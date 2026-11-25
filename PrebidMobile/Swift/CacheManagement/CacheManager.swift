@@ -15,7 +15,7 @@ limitations under the License.
 
 import UIKit
 
-@objc(PBMCacheManager)
+@objc(GenuinPBMCacheManager)
 @objcMembers
 public class CacheManager: NSObject {
     

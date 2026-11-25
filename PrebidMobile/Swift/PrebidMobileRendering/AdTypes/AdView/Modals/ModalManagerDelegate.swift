@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMModalManagerDelegate)
+@objc(GenuinPBMModalManagerDelegate)
 public protocol ModalManagerDelegate {
     
     func modalManagerWillPresentModal()

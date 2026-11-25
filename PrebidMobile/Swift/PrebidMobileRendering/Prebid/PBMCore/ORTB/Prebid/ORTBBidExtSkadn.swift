@@ -18,7 +18,7 @@ import Foundation
 
 //https://github.com/InteractiveAdvertisingBureau/openrtb/blob/master/extensions/community_extensions/skadnetwork.md
 
-@objc(PBMORTBBidExtSkadn)
+@objc(GenuinPBMORTBBidExtSkadn)
 open class ORTBBidExtSkadn: NSObject, PBMJsonCodable {
     /// Version of SKAdNetwork desired. Must be 2.0 or above
     @objc public var version: String?

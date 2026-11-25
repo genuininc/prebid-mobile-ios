@@ -19,7 +19,7 @@ import Foundation
 /**
  Determines the type of interstitial layout
  */
-@objc(PBMInterstitialLayout)
+@objc(GenuinPBMInterstitialLayout)
 public enum InterstitialLayout: Int {
     case undefined
     case portrait

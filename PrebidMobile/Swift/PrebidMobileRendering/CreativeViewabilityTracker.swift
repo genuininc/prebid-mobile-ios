@@ -19,7 +19,7 @@ import UIKit
 
 typealias ViewExposureChangeHandler = (_ tracker: CreativeViewabilityTracker, _ viewExposure: ViewExposure) -> Void
 
-@objc(PBMCreativeViewabilityTracker)
+@objc(GenuinPBMCreativeViewabilityTracker)
 protocol CreativeViewabilityTracker: NSObjectProtocol {
     
     init(view: UIView, pollingTimeInterval: TimeInterval, onExposureChange: @escaping ViewExposureChangeHandler)

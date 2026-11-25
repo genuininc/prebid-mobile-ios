@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc(PBMThreadProtocol)
+@objc(GenuinPBMThreadProtocol)
 protocol ThreadProtocol {
     
     var isMainThread: Bool { get }
