@@ -14,7 +14,11 @@
  */
 
 import UIKit
+#if canImport(GenuinPrebidMobile)
+import GenuinPrebidMobile
+#else
 import PrebidMobile
+#endif
 import AppLovinSDK
 
 @objcMembers

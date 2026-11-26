@@ -67,6 +67,11 @@ public class Prebid: NSObject {
 	/// Optional Delegate which returns Request and Response Data for further processing
     public weak var eventDelegate: PrebidEventDelegate?
 
+    /// Rewrites the URL of a VAST wrapper (`VASTAdTagURI`) right before the SDK fetches it, e.g. to add
+    /// parameters only the device knows (a Google PAL nonce on an Ad Manager tag). Return the URL unchanged
+    /// to leave it as is. Set it before loading ads; it is called on the SDK's network queue.
+    public var vastWrapperURLDecorator: ((String) -> String)?
+
     /// This property is set by the developer when he is willing to assign the assetID for Native ad.
     public var shouldAssignNativeAssetID : Bool = false
     

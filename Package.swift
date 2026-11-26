@@ -5,26 +5,28 @@ import PackageDescription
 
 let package = Package(
     
-    name: "PrebidMobile",
+    // Genuin: every name is prefixed, so a host app that also uses stock prebid-mobile-ios through SPM
+    // gets no duplicate target or module.
+    name: "GenuinPrebidMobile",
     platforms: [
         .iOS(.v15),
     ],
     products: [
         .library(
-            name: "PrebidMobile",
-            targets: ["PrebidMobile"]
+            name: "GenuinPrebidMobile",
+            targets: ["GenuinPrebidMobile"]
         ),
         .library(
-            name: "PrebidMobileAdMobAdapters",
-            targets: ["PrebidMobileAdMobAdapters"]
+            name: "GenuinPrebidMobileAdMobAdapters",
+            targets: ["GenuinPrebidMobileAdMobAdapters"]
         ),
         .library(
-            name: "PrebidMobileGAMEventHandlers",
-            targets: ["PrebidMobileGAMEventHandlers"]
+            name: "GenuinPrebidMobileGAMEventHandlers",
+            targets: ["GenuinPrebidMobileGAMEventHandlers"]
         ),
         .library(
-            name: "PrebidMobileMAXAdapters",
-            targets: ["PrebidMobileMAXAdapters"]
+            name: "GenuinPrebidMobileMAXAdapters",
+            targets: ["GenuinPrebidMobileMAXAdapters"]
         ),
     ],
     dependencies: [
@@ -33,39 +35,39 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "PrebidMobile",
+            name: "GenuinPrebidMobile",
             dependencies: [
-                "PrebidMobileOMSDK",
+                "GenuinPrebidMobileOMSDK",
             ],
             path: "PrebidMobile",
             sources: ["Swift"]
         ),
         .binaryTarget(
-            name: "PrebidMobileOMSDK",
+            name: "GenuinPrebidMobileOMSDK",
             path: "Frameworks/OMSDK_Prebidorg.xcframework"
         ),
         .target(
-            name: "PrebidMobileAdMobAdapters",
+            name: "GenuinPrebidMobileAdMobAdapters",
             dependencies: [
-                "PrebidMobile",
+                "GenuinPrebidMobile",
                 .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads"),
             ],
             path: "EventHandlers/PrebidMobileAdMobAdapters",
             sources: ["Sources"]
         ),
         .target(
-            name: "PrebidMobileGAMEventHandlers",
+            name: "GenuinPrebidMobileGAMEventHandlers",
             dependencies: [
-                "PrebidMobile",
+                "GenuinPrebidMobile",
                 .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads"),
             ],
             path: "EventHandlers/PrebidMobileGAMEventHandlers",
             sources: ["Sources"]
         ),
         .target(
-            name: "PrebidMobileMAXAdapters",
+            name: "GenuinPrebidMobileMAXAdapters",
             dependencies: [
-                "PrebidMobile",
+                "GenuinPrebidMobile",
                 .product(name: "AppLovinSDK", package: "AppLovin-MAX-Swift-Package"),
             ],
             path: "EventHandlers/PrebidMobileMAXAdapters",

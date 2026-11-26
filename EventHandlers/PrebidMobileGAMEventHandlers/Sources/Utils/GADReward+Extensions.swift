@@ -14,7 +14,11 @@
  */
 
 import GoogleMobileAds
+#if canImport(GenuinPrebidMobile)
+import GenuinPrebidMobile
+#else
 import PrebidMobile
+#endif
 
 extension GoogleMobileAds.AdReward {
     

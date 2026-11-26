@@ -34,7 +34,14 @@ class VideoCreative: AbstractCreativeImpl, VideoViewDelegate {
 
     // Whether playback should follow the viewability of the ad view.
     private var isVisibilityDrivenPlayback: Bool {
-        !(adConfiguration?.presentAsInterstitial ?? false)
+        !(adConfiguration?.presentAsInterstitial ?? false) && !isAudioOnly
+    }
+
+    // Genuin: an audio-only creative is heard, not seen. The app may keep its view out of sight
+    // (behind its own artwork), so playback and the impression don't wait for the view to be exposed.
+    private var isAudioOnly: Bool {
+        guard let type = creativeModel.mediaFileType else { return false }
+        return PrebidConstants.SUPPORTED_AUDIO_MIME_TYPES.contains(type)
     }
 
     // MARK: - Initialization
@@ -70,10 +77,21 @@ class VideoCreative: AbstractCreativeImpl, VideoViewDelegate {
 
     override func display(rootViewController viewController: UIViewController) {
         super.display(rootViewController: viewController)
-        viewabilityTracker?.start()
+        if isAudioOnly {
+            viewabilityTracker = nil
+        } else {
+            viewabilityTracker?.start()
+        }
 
         videoView.startPlayback()
         videoView.addFillSuperviewConstraints()
+
+        if isAudioOnly {
+            let exposure = Factory.createViewExposure(exposureFactor: 1,
+                                                      visibleRectangle: videoView.bounds,
+                                                      occlusionRectangles: nil)
+            onViewabilityChanged(true, viewExposure: exposure)
+        }
     }
 
     override func showAsInterstitial(fromRootViewController uiViewController: UIViewController,

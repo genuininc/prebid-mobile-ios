@@ -295,10 +295,10 @@ class VideoView: UIView, AVAssetResourceLoaderDelegate, UIGestureRecognizerDeleg
 
         let dataToSend = preloadedData.subdata(in: start..<end)
 
-        // Convert the MIMEType to a UTI
-        // TODO: This always identifies the preloaded file as an mp4. This works (since it's already passed other checks) but should
-        // be updated to use its true mimetype.
-        if let contentType = UTType(mimeType: "video/mp4") {
+        // Convert the MIMEType to a UTI. Genuin: the media file's own type, so an audio-only creative
+        // (audio/mpeg) plays; video/mp4 when the type is unknown.
+        let mimeType = creative?.creativeModel.mediaFileType ?? "video/mp4"
+        if let contentType = UTType(mimeType: mimeType) ?? UTType(mimeType: "video/mp4") {
             loadingRequest.contentInformationRequest?.contentType = contentType.identifier
             loadingRequest.contentInformationRequest?.isByteRangeAccessSupported = true
         }

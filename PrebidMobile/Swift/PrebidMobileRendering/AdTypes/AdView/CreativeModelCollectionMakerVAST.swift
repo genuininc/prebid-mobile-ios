@@ -119,6 +119,7 @@ class CreativeModelCollectionMakerVAST: NSObject {
 
         // Pack successful data into a CreativeModel
         creativeModel.videoFileURL = mediaFile.mediaURI
+        creativeModel.mediaFileType = mediaFile.type
         creativeModel.displayDurationInSeconds = NSNumber(value: creative.duration)
         creativeModel.skipOffset = creative.skipOffset
         creativeModel.width = mediaFile.width

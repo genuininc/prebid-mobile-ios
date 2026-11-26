@@ -158,6 +158,8 @@ class VastAdsBuilder: NSObject {
             requestsPending += 1
         }
 
+        let vastURL = vastURL.map { Prebid.shared.vastWrapperURLDecorator?($0) ?? $0 }
+
         // `self` is captured strongly by this callback, as in the ObjC (only the blocks around it were weakified).
         serverConnection.get(vastURL, timeout: PrebidConstants.CONNECTION_TIMEOUT_DEFAULT) { serverResponse in
             if let error = serverResponse.error {

@@ -37,7 +37,8 @@ class VastCreativeLinear: VastCreativeAbstract {
 
         // choose the one with the highest resolution that is acceptable
         guard var bestMediaFile = eligibleMediaFiles.first else {
-            return nil
+            // Genuin: an audio-only creative (e.g. a Triton audio ad) plays its audio file instead.
+            return mediaFiles.first { PrebidConstants.SUPPORTED_AUDIO_MIME_TYPES.contains($0.type) }
         }
         // Width and height come straight from the VAST XML; wrapping multiplication is what the ObjC compiled to, `*` would trap.
         for mediaFile in eligibleMediaFiles where mediaFile.width &* mediaFile.height > bestMediaFile.width &* bestMediaFile.height {

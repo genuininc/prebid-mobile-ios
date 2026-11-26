@@ -15,7 +15,11 @@
 
 import Foundation
 import GoogleMobileAds
+#if canImport(GenuinPrebidMobile)
+import GenuinPrebidMobile
+#else
 import PrebidMobile
+#endif
 
 @objcMembers
 public class GAMInterstitialEventHandler :

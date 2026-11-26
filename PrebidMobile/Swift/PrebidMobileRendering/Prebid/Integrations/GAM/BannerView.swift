@@ -46,6 +46,11 @@ public class BannerView:
     public var lastBidResponse: BidResponse? {
         adLoadFlowController?.bidResponse
     }
+
+    /// Genuin: when set, `loadAd()` skips the auction and renders this response as if Prebid Server
+    /// had returned it: a creative the app already holds (e.g. a VAST tag from its own feed), or a
+    /// test bid. It still needs a winning bid (targeting `hb_pb` + `hb_bidder`).
+    public var cannedBidResponse: BidResponse?
     
     /// ID of Stored Impression on the Prebid server
     public var configID: String {
@@ -170,8 +175,11 @@ public class BannerView:
         let bannerAdLoader = BannerAdLoader(delegate: self)
         
         adLoadFlowController = AdLoadFlowController(
-            bidRequesterFactory: { [adUnitConfig] config in
-                Factory.createBidRequester(
+            bidRequesterFactory: { [weak self, adUnitConfig] config in
+                if let canned = self?.cannedBidResponse {
+                    return CannedBidRequester(response: canned)
+                }
+                return Factory.createBidRequester(
                     connection: PrebidServerConnection.shared,
                     sdkConfiguration: Prebid.shared,
                     targeting: Targeting.shared,
@@ -641,5 +649,21 @@ extension BannerView: DisplayViewVideoPlaybackDelegate {
     
     func videoPlaybackDidComplete() {
         videoPlaybackDelegate?.videoPlaybackDidComplete(self)
+    }
+}
+
+/// Hands `BannerView.cannedBidResponse` to the load flow in place of an auction.
+private final class CannedBidRequester: BidRequesterProtocol {
+    private let response: BidResponse
+
+    init(response: BidResponse) {
+        self.response = response
+    }
+
+    func requestBids(completion: @escaping (BidResponse?, Error?) -> Void) {
+        let response = response
+        DispatchQueue.global().async {
+            completion(response, nil)
+        }
     }
 }

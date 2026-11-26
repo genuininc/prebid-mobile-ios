@@ -40,6 +40,8 @@ class CreativeModel: NSObject {
     var html: String?
     var targetURL: String?
     var videoFileURL: String?
+    /// Genuin: the MIME type of `videoFileURL` (a video, or the audio of an audio-only creative).
+    var mediaFileType: String?
     var revenue: String?
     var verificationParameters: VideoVerificationParameters?
     var trackingURLs = [String : [String]]()
